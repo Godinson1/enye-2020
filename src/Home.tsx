@@ -45,6 +45,7 @@ const Home = () => {
         location: new google.maps.LatLng(latitude, longitude),
         radius: distance * 1000,
         componentRestrictions: {country: countrySign},
+        //types: ['hospital']
         types: ['establishment']
      },
     debounce: 300
