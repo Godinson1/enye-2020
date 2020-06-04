@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import usePlacesAutocomplete from 'use-places-autocomplete';
 import useOnclickOutside from 'react-cool-onclickoutside';
-import {Select, Input, Modal} from 'antd';
+import {Select, Input, Modal, Typography} from 'antd';
 import axios from 'axios';
 
 
@@ -13,8 +13,9 @@ const Home = () => {
     const [longitude, setLongitude] = useState<number>(0);
     const [message, setMessage] = useState<string>('');
     const [countrySign, setCountrySign] = useState<string>('');
-    const [modal2Visible, setModal2Visible] = useState<boolean>(false)
+    const [modalVisible, setModalVisible] = useState<boolean>(false)
     const { Option } = Select;
+    const { Title } = Typography;
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
@@ -62,7 +63,7 @@ const Home = () => {
 
     setValue(description, false);
     setMessage(description);
-    setModal2Visible(true);
+    setModalVisible(true);
     clearSuggestions();
     setValue("");
   };
@@ -87,7 +88,7 @@ const Home = () => {
  
   return (
     <div className="main">
-    <h1>Covid Symptoms? Search closest Hospitals..</h1>
+    <Title>Covid Symptoms? Search closest Hospitals..</Title>
     <br/>
     <div ref={ref}>
       <Input
@@ -113,11 +114,11 @@ const Home = () => {
       <br /><br />
       {status === 'OK' && <div className="search-area">{renderSuggestions()}</div>}
       <Modal
-          title="Hi there, find address below and stay safe!"
+          title="Hi there, Find address below and Stay Safe!"
           centered
-          visible={modal2Visible}
+          visible={modalVisible}
           footer={null}
-          onCancel={() => setModal2Visible(false)}
+          onCancel={() => setModalVisible(false)}
         >
          {message}
      </Modal>
