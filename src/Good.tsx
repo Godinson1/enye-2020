@@ -80,11 +80,23 @@ interface State  {
 
 
     async function handlePlaceSelect() {
-        const addressObject = autoComplete.getPlace();
-        const query = addressObject.formatted_address;
-        setMessageDetails(query);
-        setModalVisible(true);
-        setQuery("");
+        if ( navigator.onLine) {
+            fetch('https://www.google.com/', { // Check for internet connectivity
+                mode: 'no-cors',
+            })
+            .then(() => {
+                const addressObject = autoComplete.getPlace();
+                const query = addressObject.formatted_address;
+                setMessageDetails(query);
+                setModalVisible(true);
+                setQuery("");  
+            }).catch(() => {
+               window.location.reload();
+            });
+            } else {
+                return null;
+            }
+        
       }
 
       const handle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -163,6 +175,7 @@ interface State  {
                 <Option value="20">20km</Option>
             </Select>
             </Input.Group>
+            <p className="footer">closeSearch - Joseph Godwin (Enye)</p>
             <Modal
                 title="Hi there, Find address below and Stay Safe!"
                 centered
