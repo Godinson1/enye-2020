@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Home from './Home';
+import Home from './Good';
 require('dotenv').config();
 
 const App: React.FC = () => {

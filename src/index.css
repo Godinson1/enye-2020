@@ -1,52 +1,75 @@
 @import '~antd/dist/antd.css';
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: teal;
+.main-view {
+  height: 100vh;
+  background-image: url(../src/images/images.png);
+  overflow: hidden;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
-.search-area {
-  text-align: center;
-  display: inline-block;
+.main-view-overlay {
+  background-color: rgb(243, 243, 243);
+  opacity: 0.9;
+  height: 100vh;
+  width: 100vw;
 }
 
-.search-box {
-  margin-top: 50px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.logo {
+  float: left;
+  color: purple;
+  padding: 5px 0 0 30px;
 }
 
-.result {
-  width: 620px;
-  background-color: thistle;
-  height: 65px;
-  cursor: pointer;
-  margin-top: 30px;
+.logo {
+  float: right;
+  color: purple;
+  padding: 5px 0 0 30px;
 }
 
-.result:hover {
-  background-color: palevioletred;
+.logo1 {
+  float: left;
+  list-style-type: none;
+  padding-right: 20px;
 }
 
-.main-text {
-  font-size: 1.3em;
 
-}
-
-.small-text {
-  font-size: 1.2em;
-}
-
-.details {
-  padding: 10px 15px 15px 20px;
+.h1-header {
+  font-size: 4em;
+  margin-top: 60px;
+  padding-top: 60px;
   text-align: center;
 }
 
-.main {
-  margin-top: 50px;
+.input {
+  width: 50%;
+  border-color: purple;
+  height: 50px;
+  text-align: center;
+  font-size: 1.7em;
 }
+
+.select {
+  width: 120px;
+  border-color: purple;
+  color: purple;
+}
+
+.select:hover {
+  color: purple;
+}
+
+.span {
+  color: purple;
+}
+
+@media screen and (max-width: 768px) {
+  .input {
+    width: 50%;
+    border-color: purple;
+    height: 50px;
+    text-align: center;
+    font-size: 1em;
+  }
+}
+
