@@ -23,6 +23,7 @@ interface State  {
         longitude: 0,
       });
       const [modalVisible, setModalVisible] = useState<boolean>(false)
+      const [connection, setConnection] = useState<boolean>(false)
       const [messageDetails, setMessageDetails] = useState<string>('');
       const [distance, setDistance] = useState<number>(1);
       const autoCompleteRef = useRef<HTMLInputElement>(null);
@@ -87,18 +88,30 @@ interface State  {
       }
 
       const handle = (e: React.ChangeEvent<HTMLInputElement>) => {
-       setTimeout(() => {
-        if(state.longitude && state.latitude) {
-            handleScriptLoad(
-                autoCompleteRef, 
-                state.latitude,
-                state.longitude,
-                distance
-            );
+        if ( navigator.onLine) {
+        fetch('https://www.google.com/', { // Check for internet connectivity
+            mode: 'no-cors',
+        })
+        .then(() => {
+            setTimeout(() => {
+                if(state.longitude && state.latitude) {
+                    handleScriptLoad(
+                        autoCompleteRef, 
+                        state.latitude,
+                        state.longitude,
+                        distance
+                    );
+                } else {
+                    console.log("Error calling variables")
+                }
+                }, 1000);
+        }).catch(() => {
+           setConnection(true);
+        });
         } else {
-            console.log("Error calling variables")
+            return null;
         }
-       }, 1000);
+       
       }
 
       const getLocation = () : void => {
@@ -159,6 +172,15 @@ interface State  {
                 >
                 <Title level={3}>Searched Address </Title>
                 <p>{messageDetails}</p>
+            </Modal>
+            <Modal
+                title="Connectivity Issue"
+                centered
+                visible={connection}
+                footer={null}
+                onCancel={() => setConnection(false)}
+                >
+                <p>Ensure you are connected to the internet and try again!</p>
             </Modal>
             </div><div></div>
             </div></div></div>
