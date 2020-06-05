@@ -23,7 +23,8 @@ interface State  {
         longitude: 0,
       });
       const [modalVisible, setModalVisible] = useState<boolean>(false)
-      const [connection, setConnection] = useState<boolean>(false)
+      const [connection, setConnection] = useState<boolean>(false);
+      const [internet, setInternet] = useState<boolean>(false);
       const [messageDetails, setMessageDetails] = useState<string>('');
       const [distance, setDistance] = useState<number>(1);
       const autoCompleteRef = useRef<HTMLInputElement>(null);
@@ -121,7 +122,10 @@ interface State  {
            setConnection(true);
         });
         } else {
-            return null;
+            setInternet(true);
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
         }
        
       }
@@ -194,6 +198,15 @@ interface State  {
                 onCancel={() => setConnection(false)}
                 >
                 <p>Ensure you are connected to the internet and try again!</p>
+            </Modal>
+            <Modal
+                title="No Internet"
+                centered
+                visible={internet}
+                footer={null}
+                onCancel={() => setInternet(false)}
+                >
+                <p>Kindly Turn on WiFi or Data connection and try again!</p>
             </Modal>
             </div><div></div>
             </div></div></div>

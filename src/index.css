@@ -71,15 +71,11 @@
     text-align: center;
     font-size: 1em;
   }
-
-  .footer {
-    font-size: 1em;
-  }
 }
 
 .footer {
-  font-size: 1.5em;
-  margin-top: 400px;
+  font-size: 1em;
+  margin-top: 350px;
   color: purple;
   text-align: center;
 }
