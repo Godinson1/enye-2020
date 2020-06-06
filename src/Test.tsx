@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Typography, Select, Input, Modal, Spin } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { locationCheck } from './Helpers/location'
-import { useDispatch, useSelector } from 'react-redux'
-import {UPDATED} from './actions/types'
-import useOnclickOutside from "react-cool-onclickoutside";
+import { locationCheck } from './Helpers/location';
+import { useDispatch, useSelector } from 'react-redux';
+import {UPDATED, CLEAR, LOADING, LOADING_STOP} from './actions/types';
+import useDebounce from './Helpers/debounce';
 
 
 const Test : React.FC = () => {
@@ -18,17 +18,22 @@ const Test : React.FC = () => {
         longitude: number,
     }
 
-    interface Result  {
-        name: string,
-        address: string,
-    }
+      const [query, setQuery] = useState("");
+      const [state, setState] = useState<State>({
+        latitude: 0,
+        longitude: 0,
+      });
+      const [modalVisible, setModalVisible] = useState<boolean>(false)
+      const [connection, setConnection] = useState<boolean>(false);
+      const [internet, setInternet] = useState<boolean>(false);
+      const [messageDetails, setMessageDetails] = useState<string>('');
+      const [message, setMessage] = useState<string>('');
+      const [distance, setDistance] = useState<number>(1);
+      const inputRef = useRef<HTMLInputElement>(null);
 
-    interface Mode {
-        typing: any,
-        query: string
-    }
+      const debouncedQuery = useDebounce(query, 500);
 
-    useEffect(() => {
+      useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
             console.log(position);
                   setState(state => ({ 
@@ -42,30 +47,37 @@ const Test : React.FC = () => {
         });
     }, [])
 
-
-      const [status, setStatus] = useState<boolean>(false);
-      const [typing, setTyping] = useState<number>(0);
-      const [query, setQuery] = useState("");
-      const [data, dataSet] = useState<any>(null);
-      const [state, setState] = useState<State>({
-        latitude: 0,
-        longitude: 0,
-      });
-      const [mode, setMode] = useState<Mode>({
-        query: "",
-        typing: 0,
-      });
-      const [modalVisible, setModalVisible] = useState<boolean>(false)
-      const [connection, setConnection] = useState<boolean>(false);
-      const [internet, setInternet] = useState<boolean>(false);
-      const [messageDetails, setMessageDetails] = useState<string>('');
-      const [message, setMessage] = useState<string>('');
-      const [distance, setDistance] = useState<number>(1);
-      const ref = useRef<HTMLInputElement>(null);
+      useEffect(() => {
+          if(debouncedQuery) {
+              dispatch({ type: LOADING });
+              const URL2 : string = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${state.latitude},${state.longitude}&radius=${distance}000&type=hospital&keyword=${debouncedQuery}&key=AIzaSyDvcWuLE2-FSF3MYCCGV8cZ0jsDDyxaliU`;
+              if ( navigator.onLine) {
+                fetch('https://www.google.com/', { // Check for internet connectivity
+                    mode: 'no-cors',
+                })
+                .then(() => {
+                    setTimeout(() => {
+                        getHospitals(URL2);
+                        dispatch({ type: LOADING_STOP });
+                    }, 1000);
+                }).catch(() => {
+                    setConnection(true);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                });
+                } else {
+                    setInternet(true);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                }
+          } else {
+              dispatch({ type: CLEAR })
+          }
+      }, [debouncedQuery]);
 
       const getHospitals = async (param: string) : Promise<any> => {
-        console.log("called...")
-        setStatus(true);
         try {
             const res : any = await axios.get(`https://cors-anywhere.herokuapp.com/${param}`)
             dispatch({
@@ -73,91 +85,49 @@ const Test : React.FC = () => {
                 payload: res.data.results
             })
             console.log(res.data.results);
-            setStatus(false);
         } catch(e) {
             console.log(e);
         }
     }
 
-    useOnclickOutside(ref, () => {
-       window.location.reload();
-      });
-
-      const perform = (name: string, address: string) : any => {
-          console.log(name);
-          console.log(address);
-            setMessageDetails(address);
-            setMessage(name);
-            setTimeout(() => {
-                setModalVisible(true);
-            }, 2000)
-      }
-
-
-      const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-          e.preventDefault();
-          var query: string = e.target.value;
-           if(typing) {
-            clearTimeout(typing);
-           }
-           mode.typing = setTimeout(() => {
-            console.log("ready to use..")
-            console.log(query)
-            const URL2 : string = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${state.latitude},${state.longitude}&radius=${distance}000&type=hospital&keyword=${query}&key=AIzaSyDvcWuLE2-FSF3MYCCGV8cZ0jsDDyxaliU`;
-            //const URL: string = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=query=hospitals+in+${query}&location=${state.latitude},${state.longitude}&radius=${distance}000&strictbounds&key=AIzaSyDvcWuLE2-FSF3MYCCGV8cZ0jsDDyxaliU`;
-            setTimeout(() => {
-                if(query == "") {
-                    return null;
-                } else {
-                e.preventDefault();
-                    if ( navigator.onLine) {
-                    fetch('https://www.google.com/', { // Check for internet connectivity
-                        mode: 'no-cors',
-                    })
-                    .then(() => {
-                        setTimeout(() => {
-                            getHospitals(URL2);
-                        }, 1000);
-                    }).catch(() => {
-                        setConnection(true);
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 3000);
-                    });
-                    } else {
-                        setInternet(true);
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 3000);
-                    }
-                }
-            }, 3000)
-            }, 4000)
-          
-      }
-
-        console.log(mode.query);
-    
-        const { Option } = Select;
-        const { Title } = Typography;
-        const handleChange = (value: any) : void => setDistance(value.value);
-
-
-      const getLocation = () : void => {
-        if("geolocation" in navigator) {
-            console.log("Available")
-        } else {
-          locationCheck();
+    const handleCriteriaChange = (e: React.FormEvent<HTMLInputElement>) => {
+        setQuery(e.currentTarget.value);
+        dispatch({ type: LOADING });
+        if(query === "") {
+            dispatch({ type: CLEAR });
         }
-     }
+      };
 
-     const reSearch = () : void => {
-        setModalVisible(false);
-        window.location.reload();
-     }
+
+    const perform = (name: string, address: string) : any => {
+        setMessageDetails(address);
+        setMessage(name);
+        setTimeout(() => {
+            setModalVisible(true);
+        }, 2000)
+    }
+
+
+    const getLocation = () : void => {
+    if("geolocation" in navigator) {
+        console.log("Available")
+    } else {
+        locationCheck();
+    }
+    }
+
+    const reSearch = () : void => {
+    setModalVisible(false);
+    setQuery("");
+    dispatch({ type: CLEAR });
+    }
+
     
+    const { Option } = Select;
+    const { Title } = Typography;
+    const handleChange = (value: any) : void => setDistance(value.value);
 
-
+    
     return (
         <div>
              <div className="main-view">
@@ -169,11 +139,11 @@ const Test : React.FC = () => {
             <h1 className="h1-header">Find <span className="span">Close</span> Hospitals</h1>
             <Input.Group compact>
             <input 
-            //ref={autoCompleteRef}
+            ref={inputRef}
             placeholder="Search hospitals close to you" 
             className="input"
-            onChange={handleQuery}
-           
+            onChange={handleCriteriaChange}
+            value={query}
             />
             <Select 
                 labelInValue
@@ -190,7 +160,7 @@ const Test : React.FC = () => {
             </Select>
             </Input.Group>
             <div className="cover" >
-                {status ? (<Spin style={{color: "purple"}} className="spinner" size="large" />) : (
+                {answer && answer.users && answer.users.loading ? (<Spin style={{color: "purple"}} className="spinner" size="large" />) : (
                 <div>{answer && answer.users && answer.users.details && answer.users.details.map((data: any) => {
                     return <div className="results" key={data.place_id}>
                         <p onClick={() => perform(data.name, data.vicinity)}  id="text">{data.name} - <span className="address">{data.vicinity}</span></p>
