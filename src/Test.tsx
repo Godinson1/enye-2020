@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Typography, Select, Input, Modal, Spin } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { debounce } from 'ts-debounce';
+import { locationCheck } from './Helpers/location'
 import { useDispatch, useSelector } from 'react-redux'
 import {UPDATED} from './actions/types'
 import useOnclickOutside from "react-cool-onclickoutside";
@@ -27,8 +27,6 @@ const Test : React.FC = () => {
         typing: any,
         query: string
     }
-
-    let resultArray: any;
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
@@ -61,6 +59,7 @@ const Test : React.FC = () => {
       const [connection, setConnection] = useState<boolean>(false);
       const [internet, setInternet] = useState<boolean>(false);
       const [messageDetails, setMessageDetails] = useState<string>('');
+      const [message, setMessage] = useState<string>('');
       const [distance, setDistance] = useState<number>(1);
       const ref = useRef<HTMLInputElement>(null);
 
@@ -69,7 +68,6 @@ const Test : React.FC = () => {
         setStatus(true);
         try {
             const res : any = await axios.get(`https://cors-anywhere.herokuapp.com/${param}`)
-            //resultArray.push(res.data.results)
             dispatch({
                 type: UPDATED,
                 payload: res.data.results
@@ -85,8 +83,19 @@ const Test : React.FC = () => {
        window.location.reload();
       });
 
+      const perform = (name: string, address: string) : any => {
+          console.log(name);
+          console.log(address);
+            setMessageDetails(address);
+            setMessage(name);
+            setTimeout(() => {
+                setModalVisible(true);
+            }, 2000)
+      }
+
 
       const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+          e.preventDefault();
           var query: string = e.target.value;
            if(typing) {
             clearTimeout(typing);
@@ -100,38 +109,52 @@ const Test : React.FC = () => {
                 if(query == "") {
                     return null;
                 } else {
-                    getHospitals(URL2);
+                e.preventDefault();
+                    if ( navigator.onLine) {
+                    fetch('https://www.google.com/', { // Check for internet connectivity
+                        mode: 'no-cors',
+                    })
+                    .then(() => {
+                        setTimeout(() => {
+                            getHospitals(URL2);
+                        }, 1000);
+                    }).catch(() => {
+                        setConnection(true);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3000);
+                    });
+                    } else {
+                        setInternet(true);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3000);
+                    }
                 }
             }, 3000)
-            }, 5000)
+            }, 4000)
           
       }
 
-      console.log(mode.query);
+        console.log(mode.query);
     
-    const { Option } = Select;
-    const { Title } = Typography;
-    const handleChange = (value: any) : void => setDistance(value.value);
+        const { Option } = Select;
+        const { Title } = Typography;
+        const handleChange = (value: any) : void => setDistance(value.value);
 
-
-    const handle = (e: React.ChangeEvent<HTMLInputElement>) => {
-        //debounce(getHospitals, 1000);
-        setTimeout(() => {
-            if(query === "") {
-                console.log("empty query")
-            } else {
-                console.log("getting");
-                //getHospitals();
-            }
-        }, 4000);
-       
-      }
 
       const getLocation = () : void => {
-        //debounce(getHospitals, 1000);
-       //getHospitals();
+        if("geolocation" in navigator) {
+            console.log("Available")
+        } else {
+          locationCheck();
+        }
      }
 
+     const reSearch = () : void => {
+        setModalVisible(false);
+        window.location.reload();
+     }
     
 
 
@@ -170,7 +193,7 @@ const Test : React.FC = () => {
                 {status ? (<Spin style={{color: "purple"}} className="spinner" size="large" />) : (
                 <div>{answer && answer.users && answer.users.details && answer.users.details.map((data: any) => {
                     return <div className="results" key={data.place_id}>
-                        <p  id="text">{data.name}</p>
+                        <p onClick={() => perform(data.name, data.vicinity)}  id="text">{data.name} - <span className="address">{data.vicinity}</span></p>
                     </div>
                 })}</div>
                 )}
@@ -181,9 +204,9 @@ const Test : React.FC = () => {
                 centered
                 visible={modalVisible}
                 footer={null}
-                onCancel={() => setModalVisible(false)}
+                onCancel={() => reSearch()}
                 >
-                <Title level={3}>Searched Address </Title>
+                <Title level={3}>{message} </Title>
                 <p>{messageDetails}</p>
             </Modal>
             <Modal

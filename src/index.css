@@ -103,7 +103,11 @@
   margin-right: 220px;
   width: 100%;
   padding-top: 20px 0 20px 0;
-  
+  cursor: pointer;
+}
+
+.results:hover {
+  color: white;
 }
 
 .cover {
