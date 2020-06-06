@@ -162,7 +162,7 @@ const Test : React.FC = () => {
                 {status ? (<Spin style={{color: "purple"}} className="spinner" size="large" />) : (
                 <div>{answer && answer.users && answer.users.details && answer.users.details.map((data: any) => {
                     return <div className="results" key={data.place_id}>
-                        <p  id="text">{data.name} <small id="address">{data.formatted_address}</small></p>
+                        <p  id="text">{data.name}</p>
                     </div>
                 })}</div>
                 )}
