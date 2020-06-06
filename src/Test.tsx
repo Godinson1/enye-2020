@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Typography, Select, Input, Modal, Spin } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
-import { locationCheck, loadScript, URL } from './Helpers/location'
 import axios from 'axios';
 import { debounce } from 'ts-debounce';
 import { useDispatch, useSelector } from 'react-redux'
 import {UPDATED} from './actions/types'
+import useOnclickOutside from "react-cool-onclickoutside";
 
 
 const Test : React.FC = () => {
@@ -62,7 +62,7 @@ const Test : React.FC = () => {
       const [internet, setInternet] = useState<boolean>(false);
       const [messageDetails, setMessageDetails] = useState<string>('');
       const [distance, setDistance] = useState<number>(1);
-      const autoCompleteRef = useRef<HTMLInputElement>(null);
+      const ref = useRef<HTMLInputElement>(null);
 
       const getHospitals = async (param: string) : Promise<any> => {
         console.log("called...")
@@ -81,6 +81,10 @@ const Test : React.FC = () => {
         }
     }
 
+    useOnclickOutside(ref, () => {
+       window.location.reload();
+      });
+
 
       const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
           var query: string = e.target.value;
@@ -93,7 +97,11 @@ const Test : React.FC = () => {
             const URL2 : string = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${state.latitude},${state.longitude}&radius=${distance}000&type=hospital&keyword=${query}&key=AIzaSyDvcWuLE2-FSF3MYCCGV8cZ0jsDDyxaliU`;
             //const URL: string = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=query=hospitals+in+${query}&location=${state.latitude},${state.longitude}&radius=${distance}000&strictbounds&key=AIzaSyDvcWuLE2-FSF3MYCCGV8cZ0jsDDyxaliU`;
             setTimeout(() => {
-                getHospitals(URL2);
+                if(query == "") {
+                    return null;
+                } else {
+                    getHospitals(URL2);
+                }
             }, 3000)
             }, 5000)
           
@@ -158,7 +166,7 @@ const Test : React.FC = () => {
                 <Option value="20">20km</Option>
             </Select>
             </Input.Group>
-            <div className="cover">
+            <div className="cover" >
                 {status ? (<Spin style={{color: "purple"}} className="spinner" size="large" />) : (
                 <div>{answer && answer.users && answer.users.details && answer.users.details.map((data: any) => {
                     return <div className="results" key={data.place_id}>
