@@ -69,7 +69,7 @@ interface State  {
         autoCompleteRef.current,
         { 
         bounds: circle.getBounds(),
-        types: ["establishment"], 
+        types: ['hospital'], 
         strictBounds: true       
         },
       );
