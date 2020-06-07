@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Typography, Select, Input, Modal, Spin } from 'antd';
-import { EnvironmentOutlined } from '@ant-design/icons';
+import { Typography, Select, Input, Modal, Spin, Button } from 'antd';
+import { EnvironmentOutlined, RightOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { locationCheck } from './Helpers/location';
 import { useDispatch, useSelector } from 'react-redux';
-import {UPDATED, CLEAR, LOADING, LOADING_STOP} from './actions/types';
-import useDebounce from './Helpers/debounce';
+import {UPDATED, CLEAR, LOADING, NO_RESULT} from './actions/types';
+
 
 
 const Test : React.FC = () => {
 
+
     const dispatch : any = useDispatch();
     const answer : any = useSelector(state => state);
+
+    if(answer && answer.users && answer.users.details) {
+        console.log(answer.users.details.map((item: any) => item.name));
+    }
 
     interface State  {
         latitude: number,
@@ -31,8 +35,6 @@ const Test : React.FC = () => {
       const [distance, setDistance] = useState<number>(1);
       const inputRef = useRef<HTMLInputElement>(null);
 
-      const debouncedQuery = useDebounce(query, 500);
-
       useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
             console.log(position);
@@ -47,39 +49,18 @@ const Test : React.FC = () => {
         });
     }, [])
 
-      useEffect(() => {
-          if(debouncedQuery) {
-              dispatch({ type: LOADING });
-              const URL2 : string = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${state.latitude},${state.longitude}&radius=${distance}000&type=hospital&keyword=${debouncedQuery}&key=AIzaSyDvcWuLE2-FSF3MYCCGV8cZ0jsDDyxaliU`;
-              if ( navigator.onLine) {
-                fetch('https://www.google.com/', { // Check for internet connectivity
-                    mode: 'no-cors',
-                })
-                .then(() => {
-                    setTimeout(() => {
-                        getHospitals(URL2);
-                        dispatch({ type: LOADING_STOP });
-                    }, 1000);
-                }).catch(() => {
-                    setConnection(true);
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 3000);
-                });
-                } else {
-                    setInternet(true);
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 3000);
-                }
-          } else {
-              dispatch({ type: CLEAR })
-          }
-      }, [debouncedQuery]);
+      
 
-      const getHospitals = async (param: string) : Promise<any> => {
+      const getHospital = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+          event.preventDefault();
+          getHospitals();
+      }
+
+      const getHospitals = async () : Promise<any> => {
+          dispatch({ type: LOADING });
+          const URL2 : string = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${state.latitude},${state.longitude}&radius=${distance}000&type=hospital&keyword=${query}&key=AIzaSyDvcWuLE2-FSF3MYCCGV8cZ0jsDDyxaliU`;
         try {
-            const res : any = await axios.get(`https://cors-anywhere.herokuapp.com/${param}`)
+            const res : any = await axios.get(`https://cors-anywhere.herokuapp.com/${URL2}`)
             dispatch({
                 type: UPDATED,
                 payload: res.data.results
@@ -92,10 +73,6 @@ const Test : React.FC = () => {
 
     const handleCriteriaChange = (e: React.FormEvent<HTMLInputElement>) => {
         setQuery(e.currentTarget.value);
-        dispatch({ type: LOADING });
-        if(query === "") {
-            dispatch({ type: CLEAR });
-        }
       };
 
 
@@ -112,7 +89,7 @@ const Test : React.FC = () => {
     if("geolocation" in navigator) {
         console.log("Available")
     } else {
-        locationCheck();
+        return;
     }
     }
 
@@ -158,14 +135,24 @@ const Test : React.FC = () => {
                 <Option value="15">15km</Option>
                 <Option value="20">20km</Option>
             </Select>
+            <Button className="btn" shape="round"
+             size="large" onClick={getHospital} disabled={answer && answer.users && answer.users.loading}>
+                 Search
+            </Button>
             </Input.Group>
-            <div className="cover" >
+                <div className="cover">
                 {answer && answer.users && answer.users.loading ? (<Spin style={{color: "purple"}} className="spinner" size="large" />) : (
-                <div>{answer && answer.users && answer.users.details && answer.users.details.map((data: any) => {
-                    return <div className="results" key={data.place_id}>
-                        <p onClick={() => perform(data.name, data.vicinity)}  id="text">{data.name} - <span className="address">{data.vicinity}</span></p>
-                    </div>
-                })}</div>
+                <div>{answer && answer.users ? answer && answer.users && answer.users.details && answer.users.details.map((item: any) => {
+                return <div className="results"> 
+                <div className="main" onClick={() => perform(item.name, item.address)}>
+                    <p id="text">
+                    <img src={item.icon} /> &nbsp; &nbsp;
+                    <span id="name">{item.name}</span><RightOutlined className="arrow"/> <span id="address">{item.vicinity}</span>
+                    </p>
+                    <li className="add">Rating - {item.rating}</li>
+                    <li className="add">Users Rating - {item.user_ratings_total}</li>
+                    </div> </div>
+                }): answer.users && answer.users.message === "Ooops No Resutlt Found!" ? <p>Ooops No Resutlt Found!"</p> : ''}</div>
                 )}
             </div>
             <p className="footer">closeSearch - Joseph Godwin (Enye)</p>

@@ -1,8 +1,9 @@
-import { UPDATED, CLEAR, LOADING, LOADING_STOP } from '../actions/types';
+import { UPDATED, CLEAR, LOADING, LOADING_STOP, NO_RESULT } from '../actions/types';
 
 const initialState = {
     details: [],
-    loading: false
+    loading: false,
+    message: null
 };
 
 export default function (state = initialState, action: any) {
@@ -12,13 +13,15 @@ export default function (state = initialState, action: any) {
                 loading: true
             }
 
-        case LOADING_STOP:
+        case NO_RESULT:
             return {
+                message: 'Ooops No Resutlt Found!',
                 loading: false
             }
         case UPDATED:
             return {
-                details: action.payload
+                details: action.payload,
+                loading: false
             }
         case CLEAR:
             return {

@@ -1,7 +1,10 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Typography, Select, Input, Modal } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Typography, Select, Input, Modal, Button } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
-import { locationCheck, loadScript, URL } from './Helpers/location'
+import { useDispatch, useSelector } from 'react-redux';
+import {UPDATED, LOADING, LOADING_STOP} from './actions/types';
+import axios from 'axios';
+
 
 
 let autoComplete: any;
@@ -12,9 +15,9 @@ interface State  {
 }
 
 
-  var my_script = loadScript(URL);
-
   const Good : React.FC = () => {
+    const dispatch : any = useDispatch();
+    const answer : any = useSelector(state => state);
       const [status, setStatus] = useState<string>('start');
       const [query, setQuery] = useState("");
       const [data, dataSet] = useState<any>(null);
@@ -27,13 +30,8 @@ interface State  {
       const [internet, setInternet] = useState<boolean>(false);
       const [messageDetails, setMessageDetails] = useState<string>('');
       const [distance, setDistance] = useState<number>(1);
-      const autoCompleteRef = useRef<HTMLInputElement>(null);
 
 
-      const setScript = useCallback(async () => {
-        let response = await do_load()
-        dataSet(response)
-      }, [])
 
       useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
@@ -47,8 +45,7 @@ interface State  {
         error => {
             console.log("Error getting coordinates", error);
         });
-        setScript()
-    }, [setScript])
+    }, [])
 
     
     const { Option } = Select;
@@ -56,114 +53,46 @@ interface State  {
     const handleChange = (value: any) : void => setDistance(value.value);
 
 
-    const handleScriptLoad =(
-         autoCompleteRef: any, 
-         latitude: number,
-         longitude: number,
-         distance: number
-         ) : void => {
-
-        var circle = new window.google.maps.Circle({ center: new window.google.maps.LatLng(latitude, longitude), radius: distance * 1000 })
-        
-        autoComplete = new window.google.maps.places.Autocomplete(
-        autoCompleteRef.current,
-        { 
-        bounds: circle.getBounds(),
-        types: ['hospital'], 
-        strictBounds: true       
-        },
-      );
-      autoComplete.setFields(["address_components", "formatted_address"]);
-      autoComplete.addListener("place_changed", () =>
-        handlePlaceSelect()
-      );
+    const getHospital = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        event.preventDefault();
+        getHospitals();
     }
 
-
-    async function handlePlaceSelect() {
-        if ( navigator.onLine) {
-            fetch('https://www.google.com/', { // Check for internet connectivity
-                mode: 'no-cors',
-            })
-            .then(() => {
-                const addressObject = autoComplete.getPlace();
-                const query = addressObject.formatted_address;
-                setMessageDetails(query);
-                setModalVisible(true);
-                setQuery("");  
-            }).catch(() => {
-               window.location.reload();
-            });
-            } else {
-                return null;
-            }
-        
+    const getHospitals = async () : Promise<any> => {
+        dispatch({ type: LOADING });
+        const URL2 : string = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${state.latitude},${state.longitude}&radius=${distance}000&type=hospital&keyword=${query}&key=AIzaSyDvcWuLE2-FSF3MYCCGV8cZ0jsDDyxaliU`;
+      try {
+          const res : any = await axios.get(`https://cors-anywhere.herokuapp.com/${URL2}`)
+          dispatch({
+              type: UPDATED,
+              payload: res.data.results
+          })
+          dispatch({ type: LOADING_STOP });
+          console.log(res.data.results);
+      } catch(e) {
+          console.log(e);
       }
+  }
 
-      const handle = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if ( navigator.onLine) {
-        fetch('https://www.google.com/', { // Check for internet connectivity
-            mode: 'no-cors',
-        })
-        .then(() => {
-            setTimeout(() => {
-                if(state.longitude && state.latitude) {
-                    handleScriptLoad(
-                        autoCompleteRef, 
-                        state.latitude,
-                        state.longitude,
-                        distance
-                    );
-                } else {
-                    console.log("Error calling variables")
-                }
-                }, 1000);
-        }).catch(() => {
-           setConnection(true);
-        });
-        } else {
-            setInternet(true);
-            setTimeout(() => {
-                window.location.reload();
-            }, 3000);
-        }
-       
-      }
+  const handleCriteriaChange = (e: React.FormEvent<HTMLInputElement>) => {
+      setQuery(e.currentTarget.value);
+    };
 
-      const getLocation = () : void => {
-          if("geolocation" in navigator) {
-              console.log("Available")
-          } else {
-            locationCheck();
-          }
-      }
-
-
-      const do_load = () => {
-        my_script.then(() => {
-          setStatus('done');
-        }).catch(function() {
-          setStatus('error');
-        })
-      }
-
-      console.log(status, query, data);
 
       return (
         <div>
             <div className="main-view">
             <li className="logo1"><h1 className="logo">closeSearch</h1></li>
-            <li className="logo1" style={{ float: "right" }}><h1 className="logo"><EnvironmentOutlined onClick={getLocation}/></h1></li>
+            <li className="logo1" style={{ float: "right" }}><h1 className="logo"><EnvironmentOutlined /></h1></li>
             <div className="main-view-overlay">
             <div className="header">
             <div>
             <h1 className="h1-header">Find <span className="span">Close</span> Hospitals</h1>
             <Input.Group compact>
             <input 
-            ref={autoCompleteRef}
+            onChange={handleCriteriaChange}
             placeholder="Search hospitals close to you" 
             className="input"
-            onFocus={handle}
             />
             <Select 
                 labelInValue
@@ -178,6 +107,10 @@ interface State  {
                 <Option value="15">15km</Option>
                 <Option value="20">20km</Option>
             </Select>
+            <Button className="button" shape="round"
+             size="large" onClick={getHospital} disabled={answer && answer.users && answer.users.loading}>
+                 Search
+            </Button>
             </Input.Group>
             <p className="footer">closeSearch - Joseph Godwin (Enye)</p>
             <Modal
