@@ -6,7 +6,7 @@ import axios from 'axios';
 export const Search =  (data: Object, history: any)  => async (dispatch: any) =>  {
         dispatch({ type: LOADING });
         try {
-            const response = await axios.post('http://localhost:4000/places/search', data);
+            const response = await axios.post('https://serene-anchorage-25424.herokuapp.com/places/search', data);
             console.log(response.data);
             dispatch({
                 type: SEARCH,
@@ -16,7 +16,7 @@ export const Search =  (data: Object, history: any)  => async (dispatch: any) =>
         } catch (err) {
             dispatch({
                 type: ERROR,
-                payload: err.response.data.error
+                payload: err.response.data
             })
             console.log(err.response);
         }
@@ -27,7 +27,7 @@ export const Search =  (data: Object, history: any)  => async (dispatch: any) =>
 export const Results =  (history: any)  => async (dispatch: any) =>  {
     dispatch({ type: LOADING_GET_RESULT });
     try {
-        const response = await axios.get('http://localhost:4000/places');
+        const response = await axios.get('https://serene-anchorage-25424.herokuapp.com/places');
         console.log(response.data.places)
         dispatch({
             type: GET_RESULT,
