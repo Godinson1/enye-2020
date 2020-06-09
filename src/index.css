@@ -1,9 +1,13 @@
 @import '~antd/dist/antd.css';
 
+body {
+  background-color: rgb(247, 234, 242);
+}
 .main-view {
   overflow: hidden;
   background-attachment: fixed;
   background-size: cover;
+  height: 100vh;
 }
 
 .main-view-overlay {
@@ -13,39 +17,62 @@
   width: 100vw;
 }
 
-.logo {
-  float: left;
-  color: purple;
-  padding: 5px 0 0 30px;
-}
-
-.logo {
-  float: right;
-  color: purple;
-  padding: 5px 0 0 30px;
-}
 
 .logo1 {
-  float: left;
   list-style-type: none;
-  padding-right: 20px;
+  float: left;
+  padding-left: 20px;
 }
 
 
 .h1-header {
-  font-size: 4em;
-  margin-top: 60px;
+  font-size: 4.1em;
+  margin: 60px 0 0 70px;
   padding-top: 60px;
   text-align: center;
+}
 
+.head {
+  background-color: white;
+  height: 50px;
+  width: 100%;
+}
+
+#p-header {
+  font-size: 1.2em;
+  margin-left: 75px;
+  float: left;
+  font-style: italic;
+}
+
+.b-header {
+  margin-left: 75px;
+  float: left;
+  font-style: italic;
 }
 
 .input {
-  width: 50%;
+  width: 70%;
   border-color: purple;
-  height: 50px;
+  height: 40px;
   text-align: center;
   font-size: 1.7em;
+}
+
+#btn-all  {
+  font-size: 1.3em;
+  font-weight: 700;
+  background-color: rgb(247, 234, 242);
+}
+
+#btn-all:hover {
+  color: black;
+  background-color: rgb(223, 96, 223);
+  border-color: black;
+}
+
+.btn-details {
+  margin-top: 30px;
 }
 
 .select {
@@ -84,24 +111,29 @@
     height: 150px;
     margin: 20px 220px 0 0 ;
     width: 100%;
-    padding: 0 5px 100px 5px;
+  
     
   }
 }
 
 .footer {
   font-size: 1.3em;
-  margin-top: 370px;
+  margin-top: 70px;
   color: black;
   text-align: center;
 }
 
 .results {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 30px;
   text-align: center;
+  justify-items: center;
   background-color: rgb(245, 170, 245);
-  height: 220px;
-  width: 100%;
-  padding-top: 0 0 20px 0;
+  height: 120px;
+  width: 70%;
+  margin: auto;
+  padding-top: 20px 0 20px 0;
   cursor: pointer;
 }
 
@@ -116,12 +148,13 @@
 }
 
 #name {
-  font-size: 2em;
+  font-size: 1.6em;
   font-weight: bold;
 }
 
 #text {
-  padding: 20px 0px 20px 20px;
+  font-size: 1.5em;
+  padding: 30px 0px 20px 20px;
 }
 
 #address {
@@ -135,7 +168,7 @@
 
 .icon {
   height: 100px;
-  font-size: 40px;
+  font-size: 10px;
   color: purple;
 }
 
@@ -146,17 +179,30 @@
 
 .btn {
   color: purple;
-  height: 70px;
+  height: 40px;
   border-color: purple;
 }
+
+.image {
+  margin: 50px 0 0 70px;
+}
+
 
 .btn:hover {
   color: purple;
   border-color: purple;
 }
 
+.so {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 100px;
+}
+
 .main {
   margin-top: 5px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .arrow {
@@ -169,4 +215,9 @@
   list-style-type: none;
   font-size: 1.5em;
   font-weight: bold;
+}
+
+.title {
+  font-size: 4em;
+  color: purple;
 }

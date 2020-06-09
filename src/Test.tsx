@@ -1,39 +1,34 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Typography, Select, Input, Modal, Spin, Button } from 'antd';
-import { EnvironmentOutlined, RightOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Select, Input, Modal, Spin, Button, Form } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import {UPDATED, CLEAR, LOADING, NO_RESULT} from './actions/types';
+import img from './images/imgs.png';
+import { Search, Results } from './actions/resultAction';
+import { withRouter,  RouteComponentProps } from "react-router";
 
 
+type SomeComponentProps = RouteComponentProps;
 
-const Test : React.FC = () => {
+const Test : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) => {
 
 
     const dispatch : any = useDispatch();
     const answer : any = useSelector(state => state);
-
-    if(answer && answer.users && answer.users.details) {
-        console.log(answer.users.details.map((item: any) => item.name));
-    }
 
     interface State  {
         latitude: number,
         longitude: number,
     }
 
-      const [query, setQuery] = useState("");
-      const [state, setState] = useState<State>({
-        latitude: 0,
-        longitude: 0,
-      });
-      const [modalVisible, setModalVisible] = useState<boolean>(false)
-      const [connection, setConnection] = useState<boolean>(false);
-      const [internet, setInternet] = useState<boolean>(false);
-      const [messageDetails, setMessageDetails] = useState<string>('');
-      const [message, setMessage] = useState<string>('');
-      const [distance, setDistance] = useState<number>(1);
-      const inputRef = useRef<HTMLInputElement>(null);
+    
+
+    const [query, setQuery] = useState("");
+    const [state, setState] = useState<State>({
+    latitude: 0,
+    longitude: 0,
+    });
+    const [connection, setConnection] = useState<boolean>(false);
+    const [internet, setInternet] = useState<boolean>(false);
+  
 
       useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
@@ -50,122 +45,119 @@ const Test : React.FC = () => {
     }, [])
 
       
-
-      const getHospital = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-          event.preventDefault();
-          getHospitals();
-      }
-
-      const getHospitals = async () : Promise<any> => {
-          dispatch({ type: LOADING });
-          const URL2 : string = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${state.latitude},${state.longitude}&radius=${distance}000&type=hospital&keyword=${query}&key=AIzaSyDvcWuLE2-FSF3MYCCGV8cZ0jsDDyxaliU`;
-        try {
-            const res : any = await axios.get(`https://cors-anywhere.herokuapp.com/${URL2}`)
-            dispatch({
-                type: UPDATED,
-                payload: res.data.results
+      const validateMessages = {
+        required: 'Select distance!',
+      };
+      
+     
+      const onFinish = (values : any) => {
+          console.log(values.query.query);
+          console.log(values.distance.distance.value);
+          const data = {
+              query: values.query.query,
+              latitude: state.latitude,
+              longitude: state.longitude,
+              distance: values.distance.distance.value
+          }
+        if ( navigator.onLine) {
+            fetch('https://www.google.com/', { // Check for internet connectivity
+                mode: 'no-cors',
             })
-            console.log(res.data.results);
-        } catch(e) {
-            console.log(e);
-        }
-    }
+            .then(() => {
+              dispatch(Search(data, history));
+            }).catch(() => {
+               setInternet(true);
+            });
+        } else {
+            setTimeout(() => {
+                setConnection(true);
+            }, 3000)
+          return null;
+        } 
+        };
+      
 
     const handleCriteriaChange = (e: React.FormEvent<HTMLInputElement>) => {
         setQuery(e.currentTarget.value);
       };
-
-
-    const perform = (name: string, address: string) : any => {
-        setMessageDetails(address);
-        setMessage(name);
-        setTimeout(() => {
-            setModalVisible(true);
-        }, 2000)
-    }
-
-
-    const getLocation = () : void => {
-    if("geolocation" in navigator) {
-        console.log("Available")
-    } else {
-        return;
-    }
-    }
-
-    const reSearch = () : void => {
-    setModalVisible(false);
-    setQuery("");
-    dispatch({ type: CLEAR });
-    }
-
     
     const { Option } = Select;
-    const { Title } = Typography;
-    const handleChange = (value: any) : void => setDistance(value.value);
 
     
     return (
         <div>
-             <div className="main-view">
-            <li className="logo1"><h1 className="logo">closeSearch</h1></li>
-            <li className="logo1" style={{ float: "right" }}><h1 className="logo"><EnvironmentOutlined onClick={getLocation}/></h1></li>
-            <div className="main-view-overlay">
-            <div className="header">
+        <div className="main-view-overlay">
+        <div className="header">
+            <div className="main-view">
+        <div className="head">
+            <li className="logo1"><h1>closeSearch</h1></li>
+            <li className="logo1" style={{ float: "left", padding: "10px 20px 0 300px" }}>
+              {answer && answer.users && answer.users.error ?  (<span style={{ color: "red", fontSize: "1.4em" }}>
+                {answer.users.error}
+              </span>) : ('')}
+            </li>
+            <li className="logo1" style={{ float: "right", padding: "5px 20px 0 0" }}>
+            <Form onFinish={onFinish} validateMessages={validateMessages}>
+    <Input.Group compact>
+      <Form.Item name={['distance', 'distance']} rules={[{ required: true }]}>
+      <Select 
+        labelInValue
+        className="select"
+        placeholder="Select Km"
+        >
+        <Option value="1000">1km</Option>
+        <Option value="2000">2km</Option>
+        <Option value="4000">4km</Option>
+        <Option value="5000">5km</Option>
+        <Option value="10000">10km</Option>
+        <Option value="15000">15km</Option>
+        <Option value="20000">20km</Option>
+        </Select>
+      </Form.Item>
+      <Form.Item name={['query', 'query']} >
+      <Input 
+        placeholder="Search" 
+        className="input"
+        onChange={handleCriteriaChange}
+        value={query}
+        required
+        />
+      </Form.Item>
+      <Form.Item >
+        <Button className="btn" htmlType="submit"
+        disabled={answer && answer.users && answer.users.loading}>
+        {answer && answer.users && answer.users.loading ? 
+                 <Spin style={{ color: "purple" }} size="small"/> : 'Search'}
+        </Button>
+      </Form.Item>
+      </Input.Group>
+    </Form>
+            </li>
+        </div>
+        <div className="cover">
+            <div className="so">
             <div>
-            <h1 className="h1-header">Find <span className="span">Close</span> Hospitals</h1>
-            <Input.Group compact>
-            <input 
-            ref={inputRef}
-            placeholder="Search hospitals close to you" 
-            className="input"
-            onChange={handleCriteriaChange}
-            value={query}
-            />
-            <Select 
-                labelInValue
-                className="select"
-                onChange={handleChange}
-                placeholder="Select Km"
-                >
-                <Option value="2">2km</Option>
-                <Option value="4">4km</Option>
-                <Option value="5">5km</Option>
-                <Option value="10">10km</Option>
-                <Option value="15">15km</Option>
-                <Option value="20">20km</Option>
-            </Select>
-            <Button className="btn" shape="round"
-             size="large" onClick={getHospital} disabled={answer && answer.users && answer.users.loading}>
-                 Search
+            <h1 className="h1-header">Search  <span className="span">Aid</span> Closer to You</h1>
+            <p id="p-header">Find hospitals, clinics, pharmacies and medical offices near you
+            <br/></p>
+            <p className="b-header">
+              <Button size="large" shape="round"
+                id="btn-all" onClick={() => dispatch(Results(history))}
+                disabled={answer && answer.users && answer.users.loading_results}
+            >
+              {answer && answer.users && answer.users.loading_results ? 
+                (<span style={{ fontStyle: "italic" }}>Retrieving.. <Spin style={{ color: "purple" }} size="small"/></span>) : ('See Searched Results')}  
             </Button>
-            </Input.Group>
-                <div className="cover">
-                {answer && answer.users && answer.users.loading ? (<Spin style={{color: "purple"}} className="spinner" size="large" />) : (
-                <div>{answer && answer.users ? answer && answer.users && answer.users.details && answer.users.details.map((item: any) => {
-                return <div className="results"> 
-                <div className="main" onClick={() => perform(item.name, item.address)}>
-                    <p id="text">
-                    <img src={item.icon} /> &nbsp; &nbsp;
-                    <span id="name">{item.name}</span><RightOutlined className="arrow"/> <span id="address">{item.vicinity}</span>
-                    </p>
-                    <li className="add">Rating - {item.rating}</li>
-                    <li className="add">Users Rating - {item.user_ratings_total}</li>
-                    </div> </div>
-                }): answer.users && answer.users.message === "Ooops No Resutlt Found!" ? <p>Ooops No Resutlt Found!"</p> : ''}</div>
-                )}
+            {answer && answer.users && answer.users.error_result ?
+              <small style={{ color: "red", fontSize: "1.4em" }}>  {answer.users.error_result.message}.. Search to start a thread!</small> : ''
+            }
+            </p>
             </div>
+            <div className="image">
+            <img src={img} alt="closeSeach"/>
+            </div></div>
             <p className="footer">closeSearch - Joseph Godwin (Enye)</p>
-            <Modal
-                title="Hi there, Find address below and Stay Safe!"
-                centered
-                visible={modalVisible}
-                footer={null}
-                onCancel={() => reSearch()}
-                >
-                <Title level={3}>{message} </Title>
-                <p>{messageDetails}</p>
-            </Modal>
+            
             <Modal
                 title="Connectivity Issue"
                 centered
@@ -190,4 +182,4 @@ const Test : React.FC = () => {
     );
 }
 
-export default Test;
+export default withRouter(Test);

@@ -1,9 +1,15 @@
-import { UPDATED, CLEAR, LOADING, LOADING_STOP, NO_RESULT } from '../actions/types';
+import { SEARCH, LOADING_GET_RESULT, GET_RESULT, 
+    ERROR_RESULT, ERROR, LOADING, USER_LOCATION, LOADING_STOP
+ } from '../actions/types';
 
 const initialState = {
+    all: [],
     details: [],
     loading: false,
-    message: null
+    loading_results: false,
+    error: '',
+    error_result: '',
+    user: {}
 };
 
 export default function (state = initialState, action: any) {
@@ -12,21 +18,37 @@ export default function (state = initialState, action: any) {
             return {
                 loading: true
             }
-
-        case NO_RESULT:
+        case USER_LOCATION:
             return {
-                message: 'Ooops No Resutlt Found!',
-                loading: false
+                user: action.payload
             }
-        case UPDATED:
+        case LOADING_STOP:
+            return {
+                loading_results: false
+            }
+        case LOADING_GET_RESULT:
+            return {
+                loading_results: true
+            }
+        case GET_RESULT:
+            return {
+                all: action.payload,
+                loading_results: false
+            }    
+        case SEARCH:
             return {
                 details: action.payload,
                 loading: false
             }
-        case CLEAR:
+        case ERROR:
             return {
-                details: [],
+                error: action.payload,
                 loading: false
+            }
+        case ERROR_RESULT:
+            return {
+                error_result: action.payload,
+                loading_results: false
             }
         default:
             return state;
