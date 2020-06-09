@@ -2,6 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "13.2.0",
+    "npm": "6.12.0"
+  },
   "scripts": {
     "start": "node server.js",
     "postinstall": "tsc",
@@ -20,10 +24,5 @@
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
-  },
-
-  "engines": {
-    "node": "13.2.0",
-    "npm": "6.12.0"
   }
 }
