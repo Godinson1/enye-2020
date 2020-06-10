@@ -93,7 +93,7 @@ const Test : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
             <li className="logo1"><h1>closeSearch</h1></li>
             <li className="logo1" style={{ float: "left", padding: "10px 20px 0 300px" }}>
               {answer && answer.users && answer.users.error ?  (<span style={{ color: "red", fontSize: "1.4em" }}>
-                {answer.users.error}
+                {answer.users.error.error}
               </span>) : ('')}
             </li>
             <li className="logo1" style={{ float: "right", padding: "5px 20px 0 0" }}>
