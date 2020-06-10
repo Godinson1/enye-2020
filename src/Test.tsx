@@ -75,6 +75,25 @@ const Test : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
           return null;
         } 
         };
+
+    const onGetResults = () => {
+        if ( navigator.onLine) {
+            fetch('https://www.google.com/', { // Check for internet connectivity
+                mode: 'no-cors',
+            })
+            .then(() => {
+              dispatch(Results(history));
+            }).catch(() => {
+               setInternet(true);
+            });
+        } else {
+            setTimeout(() => {
+                setConnection(true);
+            }, 3000)
+          return null;
+        } 
+        };
+
       
 
     const handleCriteriaChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -91,7 +110,7 @@ const Test : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
             <div className="main-view">
         <div className="head">
             <li className="logo1"><h1>closeSearch</h1></li>
-            <li className="logo1" style={{ float: "left", padding: "10px 20px 0 300px" }}>
+            <li className="logo1" style={{ float: "left", padding: "10px 20px 0 200px" }}>
               {answer && answer.users && answer.users.error ?  (<span style={{ color: "red", fontSize: "1.4em" }}>
                 {answer.users.error.error}
               </span>) : ('')}
@@ -142,7 +161,7 @@ const Test : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
             <br/></p>
             <p className="b-header">
               <Button size="large" shape="round"
-                id="btn-all" onClick={() => dispatch(Results(history))}
+                id="btn-all" onClick={() => onGetResults()}
                 disabled={answer && answer.users && answer.users.loading_results}
             >
               {answer && answer.users && answer.users.loading_results ? 
