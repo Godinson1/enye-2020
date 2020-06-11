@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Typography, Button, Avatar, Modal } from 'antd';
 import getDistance from 'geolib/es/getDistance';
+import { Link } from 'react-router-dom';
 
 
 
@@ -108,16 +109,17 @@ const Results : React.FC = () => {
                 onCancel={() => setModalVisible(false)}
             >
                 <Title level={3}><Avatar src={messageDetails.icon} alt="img"/> {messageDetails.name} </Title>
-                <li>Address - {messageDetails.vicinity}</li>
-                <li>Rating - {messageDetails.rating}</li>
-                <li>Users Rating - {messageDetails.user_rating}</li>
-                <li>Distance - You are {
+                <li className="detail"><b>Address - </b>  {messageDetails.vicinity}</li>
+                <li className="detail"><b>Rating - </b>  {messageDetails.rating}</li>
+                <li className="detail"><b>Users Rating - </b>  {messageDetails.user_rating}</li>
+                <li className="detail"><b>Distance</b> - You are {
                     getDistance(
                         { latitude: messageDetails.user_lat + '', longitude: messageDetails.user_lng + '' },
                         { latitude: messageDetails.lat + '',  longitude: messageDetails.lng + '' }
                     ) 
                 } meters away from {messageDetails.name} 
                 </li>
+                <li className="detail"><b>Direction - </b> Check <Link to={`/maps?name=${messageDetails.name}&lat=${parseFloat(messageDetails.lat)}&lng=${parseFloat(messageDetails.lng)}`}>here</Link> for direction to {messageDetails.name}</li>
             </Modal>
             </div>
         </div></div>

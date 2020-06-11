@@ -135,7 +135,7 @@ const Test : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
       </Form.Item>
       <Form.Item name={['query', 'query']} >
       <Input 
-        placeholder="Search" 
+        placeholder="Search hospitals, clinics.." 
         className="input"
         onChange={handleCriteriaChange}
         value={query}
