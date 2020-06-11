@@ -78,7 +78,7 @@ const All : React.FC = () => {
         <div>
             <div className="main-view-overlay">
             <div className="header">
-            <Title className="title">Searched Results Found - &nbsp;
+            <Title className="title">Searched Results Found -
             {result && result.users && result.users.all && 
              result.users.all ? result.users.all.length : ''}
             </Title>
