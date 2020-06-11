@@ -26,7 +26,10 @@ const MapLocal :React.FC<SomeComponentProps> = ({location} : RouteComponentProps
       map,
       title: name
     });
+    console.log(marker);
   }
+
+  
 
   const center = {
     lat: num,
