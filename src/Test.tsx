@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Input, Modal, Spin, Button, Form } from 'antd';
+import { Select, Input, Modal, Spin, Button, Form, AutoComplete } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import img from './images/imgs.png';
 import { Search, Results } from './actions/resultAction';
 import { withRouter,  RouteComponentProps } from "react-router";
+import { myFunc } from './Helpers/autocomplete'
 
 
 type SomeComponentProps = RouteComponentProps;
@@ -28,6 +29,7 @@ const Test : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
     });
     const [connection, setConnection] = useState<boolean>(false);
     const [internet, setInternet] = useState<boolean>(false);
+    const [options, setOptions] = useState<{ value: string }[]>([]);
   
 
       useEffect(() => {
@@ -48,10 +50,20 @@ const Test : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
       const validateMessages = {
         required: 'Select distance!',
       };
+
+      const handleSearch = (value: string) => {
+        setOptions(
+          !value ? [] : [{ value }, { value: myFunc(value) }],
+        );
+      };
+
+      const onSelect = (value: string) => {
+        console.log('onSelect', value);
+      };
       
      
       const onFinish = (values : any) => {
-          console.log(values.query.query);
+          console.log(values);
           console.log(values.distance.distance.value);
           const data = {
               query: values.query.query,
@@ -115,7 +127,7 @@ const Test : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
                 {answer.users.error.error}
               </span>) : ('')}
             </li>
-            <li className="logo1" style={{ float: "right", padding: "5px 20px 0 0" }}>
+            <li className="logo1" style={{ float: "right", padding: "9px 20px 0 0" }}>
             <Form onFinish={onFinish} validateMessages={validateMessages}>
     <Input.Group compact>
       <Form.Item name={['distance', 'distance']} rules={[{ required: true }]}>
@@ -134,13 +146,20 @@ const Test : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
         </Select>
       </Form.Item>
       <Form.Item name={['query', 'query']} >
+      <AutoComplete
+      options={options}
+      style={{ width: 400, borderColor: 'purple' }}
+      onSelect={onSelect}
+      onSearch={handleSearch}
+      >
       <Input 
-        placeholder="Search hospitals, clinics.." 
+        placeholder="Search hospitals, clinics, pharmacies & medical offices" 
         className="input"
         onChange={handleCriteriaChange}
         value={query}
         required
         />
+      </AutoComplete>
       </Form.Item>
       <Form.Item >
         <Button className="btn" htmlType="submit"

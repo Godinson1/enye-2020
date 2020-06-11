@@ -18,8 +18,6 @@ interface State  {
 }
 
 
-
-
 const All : React.FC = () => {
 
     const result : any = useSelector(state => state);
@@ -84,8 +82,8 @@ const All : React.FC = () => {
             </Title>
             <div className="cover">
             {result && result.users && result.users.all && 
-             result.users.all.map((data: any) => {
-               return <div key={data.placeId} className="results">
+             result.users.all.map((data: any, index: number) => {
+               return <div key={index} className="results">
                     <div>
                         <p id="text"><Avatar src={data.icon} alt="img" />  {data.name} </p>
                     </div>
