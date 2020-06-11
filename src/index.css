@@ -91,7 +91,16 @@ body {
   color: purple;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 480px) {
+  .h1-header {
+    font-size: 3em;
+    margin: 20px 0 0 0;
+    padding-top: 10px;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 600px) {
   .input {
     width: 50%;
     border-color: purple;
@@ -103,6 +112,13 @@ body {
   #text {
     font-size: 1em;
   }
+
+  .h1-header {
+    font-size: 3em;
+    margin: 60px 0 0 0;
+    padding-top: 60px;
+    text-align: center;
+  }
   
   .results {
     text-align: center;
@@ -112,6 +128,13 @@ body {
     width: 100%; 
   }
 
+  .footer {
+    visibility: hidden;
+  }
+
+  .image {
+    visibility: hidden;;
+  }
   
 
   .h1-header {

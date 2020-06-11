@@ -30,7 +30,6 @@ const MapLocal :React.FC<SomeComponentProps> = ({location} : RouteComponentProps
   }
 
   
-
   const center = {
     lat: num,
     lng: nums
@@ -47,6 +46,7 @@ const MapLocal :React.FC<SomeComponentProps> = ({location} : RouteComponentProps
         bootstrapURLKeys={key}
         defaultCenter={center}
         defaultZoom={11}
+        yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({map, maps}) => renderMarkers(map, maps)}
       >
         
