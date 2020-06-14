@@ -91,7 +91,7 @@ const SignUp : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
         <h1 style={{ color: "purple", fontSize: "4em" }}>closeSearch</h1>
           <Divider style={{ height: '15px' }}>
             <span style={{ fontSize: '1em', fontStyle: 'italic' }}>
-              Find hospitals, clinics, medical offices and pharmaacies near you
+              Find hospitals, clinics, medical offices and pharmacies near you
             </span>
           </Divider>
           <div className="site-card-border-less-wrapper">
