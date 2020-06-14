@@ -5,11 +5,11 @@ import "firebase/auth";
 //Firebase configuration
 var firebaseConfig = {
     apiKey: "xxxxx",
-    authDomain: "axxx",
+    authDomain: "xxxxx",
     databaseURL: "xxxxx",
     projectId: "xxxxx",
     storageBucket: "xxxxx",
-    messagingSenderId: "xxxx",
+    messagingSenderId: "xxxxx",
     appId: "xxxxx"
   };
 
