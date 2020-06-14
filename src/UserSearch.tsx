@@ -68,6 +68,7 @@ const UserSearch : React.FC = () => {
 
     //If results loading.. Show a spinner
     if (loading) return <div id="load"><Spin style={{ color: "purple" }} size="large"/></div>;
+    if (data &&  data.place.length === 0) return <div id="load"><span id="no">Reload or Search to see results</span></div>;
     if(error){
         console.log(JSON.stringify(error));
     }

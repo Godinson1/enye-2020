@@ -86,7 +86,7 @@ const SignUp : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
     
       return (
         <div>
-        <div className="login-forms">
+        <div className="login-form">
         <div className="logins">
         <h1 style={{ color: "purple", fontSize: "4em" }}>closeSearch - Sign Up</h1>
           {state && state.users && state.users.error_signup ? 
