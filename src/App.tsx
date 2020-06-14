@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Home from './Home';
 import Result from './Results';
@@ -20,7 +19,7 @@ require('dotenv').config();
 
 //Initialize appolo client with to access for graphl data
 const client = new ApolloClient({
-  uri: 'http://serene-anchorage-25424.herokuapp.com/graphql'
+  uri: 'https://serene-anchorage-25424.herokuapp.com/graphql'
 })
 
 

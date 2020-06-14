@@ -12,7 +12,7 @@ import { auth } from '../firebase'
 export const Search =  (data: Object, history: any)  => async (dispatch: any) =>  {
         dispatch({ type: LOADING });
         try {
-            const response = await axios.post('http://serene-anchorage-25424.herokuapp.com/places/search', data);
+            const response = await axios.post('https://serene-anchorage-25424.herokuapp.com/places/search', data);
             console.log(response.data);
             dispatch({
                 type: SEARCH,
