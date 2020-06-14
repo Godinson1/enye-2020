@@ -1,7 +1,13 @@
 @import '~antd/dist/antd.css';
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background-color: rgb(247, 234, 242);
+  text-align: center;
 }
 .main-view {
   overflow: hidden;
@@ -51,6 +57,16 @@ body {
   font-style: italic;
 }
 
+.inputs {
+  width: 30%;
+  border-color: purple;
+  height: 40px;
+  text-align: center;
+  font-size: 1.7em;
+  font-style: italic;
+  margin: 150px 0 0 540px;
+}
+
 .input {
   width: 70%;
   border-color: purple;
@@ -58,6 +74,16 @@ body {
   text-align: center;
   font-size: 1.7em;
   font-style: italic;
+}
+
+.login-form {
+  text-align: center;
+  display: inline-block;
+}
+
+.login-style {
+  width: 100%;
+  margin-top: 200px;
 }
 
 #btn-all  {
@@ -73,13 +99,21 @@ body {
 }
 
 .btn-details {
-  margin-top: 30px;
+  margin-top: 20px;
+}
+
+.btn-detailss {
+  margin-top: 35px;
 }
 
 .select {
   width: 120px;
   border-color: purple;
   color: purple;
+}
+
+#desc {
+  margin-top: 1px;
 }
 
 .select:hover {
@@ -96,16 +130,23 @@ body {
   margin-top: 15px;
   color: purple;
   text-align: center;
+  cursor: pointer;
+}
+
+.per {
+  background-color: rgb(245, 170, 245);
+  width: 70%;
+  margin: auto;
 }
 
 .results {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: 30px;
+  grid-gap: 100px;
   text-align: center;
   justify-items: center;
   background-color: rgb(245, 170, 245);
-  height: 120px;
+  height: 170px;
   width: 70%;
   margin: auto;
   padding-top: 20px 0 20px 0;
@@ -127,9 +168,25 @@ body {
   font-weight: bold;
 }
 
+#period {
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 30px;
+}
+
+#add {
+  font-size: 17px;
+  text-align: center;
+  font-style: italic;
+}
+
 #text {
-  font-size: 1.5em;
-  padding: 30px 0px 20px 20px;
+  font-size: 1.4em;
+  padding: 15px 0 0 20px;
+  line-height: 35px;
+  font-weight: 700;
+  margin-top: 20px;
 }
 
 #address {
@@ -145,6 +202,11 @@ body {
   height: 100px;
   font-size: 10px;
   color: purple;
+}
+
+#load {
+  text-align: center;
+  margin-top: 300px;
 }
 
 .div {
@@ -207,16 +269,48 @@ body {
   font-size: 1.3em;
 }
 
+.auto-complete {
+  width: 600px;
+  border-color: purple
+}
+
 
 @media screen and (min-width: 320px) and (max-width: 374px) {
 
   #text {
     font-size: 15px;
-    padding: 30px 0px 20px 20px;
+    padding: 30px 0px 0 0;
+  }
+
+  #p-header {
+    font-size: 1.2em;
+    margin-left: 50px;
+    float: left;
+    font-style: italic;
+  }
+
+  .h1-header {
+    font-size: 2em;
+    margin-left: 50px;
+    padding: 5px;
+  }
+
+  .b-header {
+    margin-left: 50px;
+    font-style: italic;
+  }
+
+  #add {
+    visibility: hidden;
+   }
+
+   .per {
+    width: 100%;
+    margin: auto;
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (min-width: 375px) and (max-width: 599px) {
   .input {
     width: 50%;
     border-color: purple;
@@ -229,12 +323,29 @@ body {
     font-size: 1.2em;
   }
 
+  #add {
+   visibility: hidden;
+  }
+
   .h1-header {
     font-size: 2.5em;
     line-height: 50px;
-    margin: 20px 0 0 0;
+    margin: 80px 0 0 80px;
     padding-top: 20px;
     text-align: center;
+  }
+
+  #p-header {
+    font-size: 1.2em;
+    margin-left: 80px;
+    float: left;
+    font-style: italic;
+  }
+
+  .b-header {
+    margin-left: 80px;
+    float: left;
+    font-style: italic;
   }
   
   .results {
@@ -254,13 +365,88 @@ body {
   .image {
     visibility: hidden;;
   }
-  
-
-  .h1-header {
-    font-size: 3.5em;
-    margin: 20px 0 0 60px;
-    padding-top: 60px;
-    text-align: center;
-  }
 }
 
+@media screen and (min-width: 600px) and (max-width: 767px) {
+
+  #text {
+    font-size: 15px;
+    padding: 30px 0px 20px 20px;
+  }
+
+  #p-header {
+    font-size: 1.9em;
+    font-style: italic;
+    margin-left: 10px;
+  }
+
+  .h1-header {
+    font-size: 5em;
+    margin: 190px 0 0 10px;
+    padding: 5px;
+  }
+
+
+  .b-header {
+    font-style: italic;
+    margin-left: 190px;
+    text-align: center;
+  }
+
+  .so {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 10px;
+  }
+
+  .image {
+    visibility: hidden;
+  }
+
+  #add {
+   visibility: hidden;
+  }
+  
+}
+
+@media screen and (min-width: 768px) and (max-width: 1190px) {
+  .so {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 10px;
+  }
+
+  .image {
+    visibility: hidden;
+  }
+
+  #p-header {
+    font-size: 1.9em;
+    font-style: italic;
+    margin-left: 20px;
+  }
+
+  .h1-header {
+    font-size: 6em;
+    margin: 190px 0 0 10px;
+    padding: 5px;
+  }
+  
+  #text {
+    font-size: 1.4em;
+  }
+
+  .b-header {
+    font-style: italic;
+    margin-left: 250px;
+    text-align: center;
+  }
+
+  .results {
+    width: 85%;
+  }
+
+  #add {
+    visibility: hidden;
+   }
+}

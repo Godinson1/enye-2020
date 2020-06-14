@@ -1,12 +1,18 @@
-import { LOADING, SEARCH, GET_RESULT, LOADING_GET_RESULT, ERROR, ERROR_RESULT } from './types';
+//Imported Types, packages and helpers
+import { LOADING, SEARCH, 
+         ERROR, LOGGING_OUT, 
+         LOGGED_OUT 
+} from './types';
 import axios from 'axios';
+import { auth } from '../firebase'
 
 
 
+//Handle Search request
 export const Search =  (data: Object, history: any)  => async (dispatch: any) =>  {
         dispatch({ type: LOADING });
         try {
-            const response = await axios.post('https://serene-anchorage-25424.herokuapp.com/places/search', data);
+            const response = await axios.post('http://serene-anchorage-25424.herokuapp.com/places/search', data);
             console.log(response.data);
             dispatch({
                 type: SEARCH,
@@ -24,22 +30,16 @@ export const Search =  (data: Object, history: any)  => async (dispatch: any) =>
 }
 
 
-export const Results =  (history: any)  => async (dispatch: any) =>  {
-    dispatch({ type: LOADING_GET_RESULT });
+//Logout User
+export const logOut = (history: any) => async (dispatch: any) => {
+    dispatch({ type: LOGGING_OUT });
     try {
-        const response = await axios.get('https://serene-anchorage-25424.herokuapp.com/places');
-        console.log(response.data.places)
-        dispatch({
-            type: GET_RESULT,
-            payload: response.data.places
-        })
-        history.push('/results')
-    } catch (err) {
-        dispatch({
-            type: ERROR_RESULT,
-            payload: err.response.data
-        })
-        console.log(err);
-    }
+        await auth.signOut();
+        dispatch({ type: LOGGED_OUT });
+        window.location.href = '/'
+    } catch(err) {
 
+    }
+   
 }
+
