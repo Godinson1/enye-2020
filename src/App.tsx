@@ -37,10 +37,10 @@ const App: React.FC = () => {
             <Route exact path="/" component={Login}/>
             <Route exact path="/signup" component={Signup}/>
             <AuthRoute path="/home" component={Home} />
-            <Route exact path="/search" component={Result}/>
-            <Route exact path="/results" component={All}/>
-            <Route exact path="/user-result" component={UserSearch}/>
-            <Route exact path="/maps" component={MapLocal}/>
+            <AuthRoute exact path="/search" component={Result}/>
+            <AuthRoute exact path="/results" component={All}/>
+            <AuthRoute exact path="/user-result" component={UserSearch}/>
+            <AuthRoute exact path="/maps" component={MapLocal}/>
         </Switch>
       </Router>
       </AuthProvider>
