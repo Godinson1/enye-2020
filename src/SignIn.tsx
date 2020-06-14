@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { Form, Input, Button, Spin, Alert, Modal } from 'antd'
+import { Form, Input, Button, Spin, Alert, Modal, Divider } from 'antd'
 import {  UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { withRouter,  RouteComponentProps } from "react-router";
@@ -98,6 +98,7 @@ const SignIn : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
         <div className="login-forms">
         <div className="logins">
           <h1 style={{ color: "purple", fontSize: "4em" }}>closeSearch - Login</h1>
+          <Divider />
           {state && state.users && state.users.error_login ? 
             (
               <Alert
