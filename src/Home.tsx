@@ -43,7 +43,6 @@ const Home : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
 
     
     //ALl states for storing values
-    const [query, setQuery] = useState("");
     const [state, setState] = useState<State>({
     latitude: 0,
     longitude: 0,
@@ -159,7 +158,6 @@ const Home : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
                         <Input 
                           placeholder="Search hospitals, clinics, pharmacies & medical offices" 
                           className="input"
-                          value={query}
                           required
                         />
                       </AutoComplete>
