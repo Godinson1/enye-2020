@@ -180,13 +180,6 @@ const Home : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
             <p id="p-header">Find hospitals, clinics, pharmacies and medical offices near you
             <br/></p>
             <p className="b-header">
-              <Link to="/results">
-              <Button size="large" shape="round"
-                id="btn-all"
-              >
-                 All Searched Results
-              </Button>
-              </Link> &nbsp;&nbsp;
               <Link to="/user-result">
               <Button size="large" shape="round"
                 id="btn-all"

@@ -7,6 +7,8 @@ export const signInError = (error: string, email: string) => {
         return `User with ${email} not registered.. Check email or Sign Up!`
     } else if(error === 'auth/weak-password') {
         return 'Password should be at least 6 characters long'
+    } else if(error === 'auth/email-already-in-use') {
+        return `User with ${email} already exist!`
     } else {
         return null;
     }
