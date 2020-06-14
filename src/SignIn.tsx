@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { Form, Input, Button, Spin, Alert, Modal, Divider } from 'antd'
-import {  UserOutlined, LockOutlined } from '@ant-design/icons'
+import { Form, Input, Button, Spin, Alert, Modal, Divider, Card } from 'antd'
+import {  UserOutlined, LockOutlined, EnvironmentOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { withRouter,  RouteComponentProps } from "react-router";
 import { signInError, isEmail } from './Helpers/firebase'
@@ -97,8 +97,14 @@ const SignIn : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
         <div>
         <div className="login-forms">
         <div className="logins">
-          <h1 style={{ color: "purple", fontSize: "4em" }}>closeSearch - Login</h1>
-          <Divider />
+          <h1 style={{ color: "purple", fontSize: "4em" }}>closeSearch</h1>
+          <Divider>
+            <span style={{ fontSize: '1em', fontStyle: 'italic' }}>
+              Find hospitals, clinics, medical offices and pharmaacies near you
+            </span>
+          </Divider>
+          <div className="site-card-border-less-wrapper">
+            <Card title={<EnvironmentOutlined className="icon"/>} bordered={false} style={{ width: 600 }}>
           {state && state.users && state.users.error_login ? 
             (
               <Alert
@@ -111,9 +117,10 @@ const SignIn : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
               />
             ) : ('')
           }
+          <h1 style={{ color: "purple", fontSize: "2em" }}>Sign In</h1>
         <Form
           name="normal_login"
-          className="inputs"
+          className="auth"
           initialValues={{ remember: true }}
           onFinish={onFinish}
         >
@@ -137,12 +144,12 @@ const SignIn : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
             </Form.Item>
 
             <Form.Item>
-              <Button id="btn" size="large" shape="round" htmlType="submit" >
+              <Button id="btn-form" size="large" shape="round" htmlType="submit" >
                 {state && state.users && state.users.loading_user ? (
                   (<span style={{ fontStyle: "italic" }}>
                     Logging in.. <Spin style={{ color: "purple" }} size="small"/>
                   </span>)
-                ): ('Log in')}
+                ): ('Sign In')}
               </Button>
             </Form.Item>
             <Link to="/signup">
@@ -151,6 +158,8 @@ const SignIn : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
               </span>
             </Link>
         </Form>
+        </Card>
+        </div>
         <Modal
                 title="Connectivity Issue"
                 centered

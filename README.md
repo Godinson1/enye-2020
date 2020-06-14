@@ -11,7 +11,6 @@ Find App Features below.
 - Register User
 - Login User
 - Search for hospitals, clinics, pharmacies and medical offices
-- View all Searched Results
 - View 'Users specific' Searched Results
 - Access Searched Result Details i.e Name, Vicinity, Ratings etc.
 - Check Map for directions to each searched place

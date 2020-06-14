@@ -196,8 +196,7 @@ body {
 }
 
 .icon {
-  height: 100px;
-  font-size: 10px;
+  font-size: 50px;
   color: purple;
 }
 
@@ -209,6 +208,20 @@ body {
 .div {
   height: 5px;
   color: black;
+}
+
+.btn-form {
+  color: purple;
+  height: 31px;
+  text-align: center;
+  justify-content: center;
+  border-color: purple;
+}
+
+.btn-form:hover {
+  background-color: purple;
+  color: purple;
+  border-color: purple;
 }
 
 .btn {
@@ -264,6 +277,19 @@ body {
 .detail {
   padding-bottom: 10px;
   font-size: 1.3em;
+}
+
+.login-forms {
+  text-align: center;
+  display: inline-block;
+}
+
+.auth {
+  width: 100%;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 1.5em;
+  font-style: italic;
 }
 
 #no {

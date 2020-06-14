@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
-import { Form, Input, Button, Alert, Spin, Modal } from 'antd'
-import {  UserOutlined, LockOutlined } from '@ant-design/icons'
+import { Form, Input, Button, Alert, Spin, Modal, Divider, Card } from 'antd'
+import {  UserOutlined, LockOutlined, EnvironmentOutlined } from '@ant-design/icons'
 import { withRouter,  RouteComponentProps } from "react-router";
 import { signInError, isEmail } from './Helpers/firebase'
 import { auth } from './firebase'
@@ -86,27 +86,35 @@ const SignUp : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
     
       return (
         <div>
-        <div className="login-form">
+        <div className="login-forms">
         <div className="logins">
-        <h1 style={{ color: "purple", fontSize: "4em" }}>closeSearch - Sign Up</h1>
-          {state && state.users && state.users.error_signup ? 
-            (
-              <Alert
-                message="Sign Up Error"
-                description={state.users.error_signup}
-                type="error"
-                closable
-                style={{ width: '50%', display: "inline-block", fontSize: "1.5em" }}
-                onClose={onClose}
-              />
-            ) : ('')
-          }
-        <Form
-          name="normal_login"
-          className="inputs"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-        >
+        <h1 style={{ color: "purple", fontSize: "4em" }}>closeSearch</h1>
+          <Divider style={{ height: '15px' }}>
+            <span style={{ fontSize: '1em', fontStyle: 'italic' }}>
+              Find hospitals, clinics, medical offices and pharmaacies near you
+            </span>
+          </Divider>
+          <div className="site-card-border-less-wrapper">
+            <Card title={<EnvironmentOutlined className="icon"/>} bordered={false} style={{ width: 600 }}>
+              {state && state.users && state.users.error_signup ? 
+                (
+                  <Alert
+                    message="Sign Up Error"
+                    description={state.users.error_signup}
+                    type="error"
+                    closable
+                    style={{ width: '50%', display: "inline-block", fontSize: "1.5em" }}
+                    onClose={onClose}
+                  />
+                ) : ('')
+              }
+             <h1 style={{ color: "purple", fontSize: "2em" }}>Sign Up</h1>
+            <Form
+            name="normal_login"
+            className="auth"
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            >
             <Form.Item
               name="email"
               label="Email"
@@ -127,12 +135,12 @@ const SignUp : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
             </Form.Item>
 
           <Form.Item >
-          <Button id="btn" size="large" shape="round" htmlType="submit" >
+          <Button id="btn-form" size="large" shape="round" htmlType="submit" >
                 {state && state.users && state.users.loading_user ? (
                   (<span style={{ fontStyle: "italic" }}>
                     Registering.. <Spin style={{ color: "purple" }} size="small"/>
                   </span>)
-                ): ('Log in')}
+                ): ('Sign Up')}
               </Button>
           </Form.Item>
           <Link to="/">
@@ -141,7 +149,10 @@ const SignUp : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
               </span>
           </Link>
         </Form>
-        <Modal
+            </Card>
+          </div>
+        
+          <Modal
                 title="Connectivity Issue"
                 centered
                 visible={connection}
