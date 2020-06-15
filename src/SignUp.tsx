@@ -1,12 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
 import { Form, Input, Button, Alert, Spin, Modal, Divider, Card } from 'antd'
 import {  UserOutlined, LockOutlined, EnvironmentOutlined } from '@ant-design/icons'
 import { withRouter,  RouteComponentProps } from "react-router";
-import { signInError, isEmail } from './Helpers/firebase'
-import { auth } from './firebase'
-import { ERROR_SIGNUP, USER_LOADING, SET_AUTHENTICATED } from './actions/types'
+import { Register } from './actions/resultAction'
+
 
 
 
@@ -29,54 +28,31 @@ const SignUp : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
 
 
     //Signup User
-    const onFinish = useCallback(async (values: any) => {
+    const onFinish = (values: any) => {
 
-      
         //values in email and password variables respectively
         const email = values.email;
         const password = values.password;
-        
+        const data = { email, password };
 
-        //Dispatch loading user on button click and store form
-        //Check if user is online and connected to the internet
-        //If connected, Sign up user else return connection message
-        //Check if valid email - If true, call action else return error
+        //Check for connectivity and dispatch action
         if (navigator.onLine) {
           fetch('https://www.google.com/', { // Used Google because of good uptime
               mode: 'no-cors',
           })
-          .then( async () => {
-            dispatch({ type: USER_LOADING });
-            const isValidEmail = isEmail(email);
-            if(!isValidEmail) {
-                dispatch({
-                    type: ERROR_SIGNUP,
-                    payload: 'Must be a valid email address'
-                })
-            } else {
-              try {
-                await auth.createUserWithEmailAndPassword(email, password);
-                dispatch({ type: SET_AUTHENTICATED });
-                history.push('/home');
-              } catch(err) {
-                console.log(err);
-                dispatch({
-                    type: ERROR_SIGNUP,
-                    payload: signInError(err.code, email)
-                });
-            }
-            }
+          .then(() => {
+            dispatch(Register(data, history));
           }).catch(() => {
-            setInternet(true);
+          setInternet(true);
           });
-          } else { //Set connection message after 3 seconds
-            setTimeout(() => {
-                setConnection(true);
-            }, 3000)
-            return null;
-          } 
-    
-    },[history]);
+        } else { //Set connection message after 3 seconds
+        setTimeout(() => {
+            setConnection(true);
+        }, 3000)
+        return null;
+        } 
+             
+    };
    
     
 

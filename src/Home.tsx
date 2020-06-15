@@ -13,6 +13,7 @@ import { USER_DETAIL } from './actions/types';
 //Retrieve RouteComponent props from react-router
 type SomeComponentProps = RouteComponentProps;
 
+
 //Main Home Functional Component
 const Home : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) => {
 
@@ -192,7 +193,7 @@ const Home : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) =>
             <div className="image">
             <img src={img} alt="closeSeach"/>
             </div></div>
-            <p className="footer" onClick={() => dispatch(logOut(history))}>
+            <p className="footer" onClick={() => dispatch(logOut())}>
               {answer && answer.users && answer.users.user ? (
                 <span style={{ fontStyle: "italic" }}>
                {answer.users.user.email} - Logout

@@ -1,13 +1,12 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Form, Input, Button, Spin, Alert, Modal, Divider, Card } from 'antd'
 import {  UserOutlined, LockOutlined, EnvironmentOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { withRouter,  RouteComponentProps } from "react-router";
-import { signInError, isEmail } from './Helpers/firebase'
-import { auth } from './firebase'
-import { ERROR_LOGIN, SET_AUTHENTICATED, USER_LOADING } from './actions/types'
 import { AuthContext } from './Auth'
+import { LogIn } from './actions/resultAction'
+
 
 
 //Retrieve RouteComponent props from react-router
@@ -30,60 +29,32 @@ const SignIn : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
 
 
     //Sign In User
-    const onFinish = useCallback(async (values: any) => {
+    const onFinish = (values: any) => {
 
-     
-      //values in email and password variables respectively
-      const email = values.email;
-      const password = values.password;
-     
-     
-       //Dispatch loading user on button click and store form
-      //Check if valid email - If true, return error else check
-      //if user is online and connected to the internet
-      //If connected, Sign in user else return connection message
+        //values in email and password variables respectively
+        const email = values.email;
+        const password = values.password;
+        const data = { email, password };
+
+        //Check for connectivity and dispatch action
         if (navigator.onLine) {
-        fetch('https://www.google.com/', { // Used Google because of good uptime
-            mode: 'no-cors',
-        })
-        .then( async () => {
-          dispatch({ type: USER_LOADING });
-          const isValidEmail = isEmail(email);
-          if(!isValidEmail) {
-              dispatch({
-                  type: ERROR_LOGIN,
-                  payload: 'Must be a valid email address'
-              })
-
-          } else {
-            
-            try {
-              await auth.signInWithEmailAndPassword(email, password);
-              dispatch({ type: SET_AUTHENTICATED });
-              history.push('/home');
-            } catch(err) {
-              console.log(err);
-              dispatch({
-                  type: ERROR_LOGIN,
-                  payload: signInError(err.code, email)
-              })
-            }
-            
-          }
-          
-        }).catch(() => {
+          fetch('https://www.google.com/', { // Used Google because of good uptime
+              mode: 'no-cors',
+          })
+          .then(() => {
+            dispatch(LogIn(data, history));
+          }).catch(() => {
           setInternet(true);
-        });
+          });
         } else { //Set connection message after 3 seconds
-          setTimeout(() => {
-              setConnection(true);
-          }, 3000)
-          return null;
+        setTimeout(() => {
+            setConnection(true);
+        }, 3000)
+        return null;
         } 
-      
-    },[history]);
-    
-  
+        
+    }
+
 
     //Cancel error alert
     const onClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
