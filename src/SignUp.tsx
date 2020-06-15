@@ -31,48 +31,50 @@ const SignUp : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
     //Signup User
     const onFinish = useCallback(async (values: any) => {
 
-      //Dispatch loading user on button click and store form
-      //values in emaila and password variables respectively
-        dispatch({ type: USER_LOADING });
+      
+        //values in email and password variables respectively
         const email = values.email;
         const password = values.password;
+        
 
-        //Check if valid email - If true, return error else check
-       //if user is online and connected to the internet
-       //If connected, Sign up user else return connection message
-        const isValidEmail = isEmail(email);
-        if(!isValidEmail) {
-            dispatch({
-                type: ERROR_SIGNUP,
-                payload: 'Must be a valid email address'
-            })
-        } else {
-            if ( navigator.onLine) {
-                fetch('https://www.google.com/', { // Used Google because of good uptime
-                    mode: 'no-cors',
+        //Dispatch loading user on button click and store form
+        //Check if user is online and connected to the internet
+        //If connected, Sign up user else return connection message
+        //Check if valid email - If true, call action else return error
+        if (navigator.onLine) {
+          fetch('https://www.google.com/', { // Used Google because of good uptime
+              mode: 'no-cors',
+          })
+          .then( async () => {
+            dispatch({ type: USER_LOADING });
+            const isValidEmail = isEmail(email);
+            if(!isValidEmail) {
+                dispatch({
+                    type: ERROR_SIGNUP,
+                    payload: 'Must be a valid email address'
                 })
-                .then( async () => {
-                    try {
-                        await auth.createUserWithEmailAndPassword(email, password);
-                        dispatch({ type: SET_AUTHENTICATED });
-                        history.push('/home');
-                    } catch(err) {
-                        console.log(err);
-                        dispatch({
-                            type: ERROR_SIGNUP,
-                            payload: signInError(err.code, email)
-                        });
-                    }
-                }).catch(() => {
-                  setInternet(true);
+            } else {
+              try {
+                await auth.createUserWithEmailAndPassword(email, password);
+                dispatch({ type: SET_AUTHENTICATED });
+                history.push('/home');
+              } catch(err) {
+                console.log(err);
+                dispatch({
+                    type: ERROR_SIGNUP,
+                    payload: signInError(err.code, email)
                 });
-            } else { //Set connection message after 3 seconds
-              setTimeout(() => {
-                  setConnection(true);
-              }, 3000)
-              return null;
-            } 
-        }
+            }
+            }
+          }).catch(() => {
+            setInternet(true);
+          });
+          } else { //Set connection message after 3 seconds
+            setTimeout(() => {
+                setConnection(true);
+            }, 3000)
+            return null;
+          } 
     
     },[history]);
    
@@ -135,7 +137,9 @@ const SignUp : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
             </Form.Item>
 
           <Form.Item >
-          <Button id="btn-form" size="large" shape="round" htmlType="submit" >
+          <Button id="btn-form" size="large" shape="round" 
+          disabled={state && state.users && state.users.loading_user}
+          htmlType="submit" >
                 {state && state.users && state.users.loading_user ? (
                   (<span style={{ fontStyle: "italic" }}>
                     Registering.. <Spin style={{ color: "purple" }} size="small"/>

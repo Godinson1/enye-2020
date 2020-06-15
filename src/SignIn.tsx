@@ -32,50 +32,56 @@ const SignIn : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
     //Sign In User
     const onFinish = useCallback(async (values: any) => {
 
-      //Dispatch loading user on button click and store form
-      //values in emaila and password variables respectively
-      dispatch({ type: USER_LOADING });
+     
+      //values in email and password variables respectively
       const email = values.email;
       const password = values.password;
      
+     
+       //Dispatch loading user on button click and store form
       //Check if valid email - If true, return error else check
       //if user is online and connected to the internet
       //If connected, Sign in user else return connection message
-      const isValidEmail = isEmail(email);
-        if(!isValidEmail) {
-            dispatch({
-                type: ERROR_LOGIN,
-                payload: 'Must be a valid email address'
-            })
-        } else {
-          if ( navigator.onLine) {
-            fetch('https://www.google.com/', { // Used Google because of good uptime
-                mode: 'no-cors',
-            })
-            .then( async () => {
-              try {
-                await auth.signInWithEmailAndPassword(email, password);
-                dispatch({ type: SET_AUTHENTICATED });
-                history.push('/home');
+        if (navigator.onLine) {
+        fetch('https://www.google.com/', { // Used Google because of good uptime
+            mode: 'no-cors',
+        })
+        .then( async () => {
+          dispatch({ type: USER_LOADING });
+          const isValidEmail = isEmail(email);
+          if(!isValidEmail) {
+              dispatch({
+                  type: ERROR_LOGIN,
+                  payload: 'Must be a valid email address'
+              })
+
+          } else {
+            
+            try {
+              await auth.signInWithEmailAndPassword(email, password);
+              dispatch({ type: SET_AUTHENTICATED });
+              history.push('/home');
             } catch(err) {
-                console.log(err);
-                dispatch({
-                    type: ERROR_LOGIN,
-                    payload: signInError(err.code, email)
-                })
+              console.log(err);
+              dispatch({
+                  type: ERROR_LOGIN,
+                  payload: signInError(err.code, email)
+              })
             }
-            }).catch(() => {
-              setInternet(true);
-            });
+            
+          }
+          
+        }).catch(() => {
+          setInternet(true);
+        });
         } else { //Set connection message after 3 seconds
           setTimeout(() => {
               setConnection(true);
           }, 3000)
           return null;
         } 
-          
-        }
-      },[history]);
+      
+    },[history]);
     
   
 
@@ -144,7 +150,10 @@ const SignIn : React.FC<SomeComponentProps> = ({history} : RouteComponentProps) 
             </Form.Item>
 
             <Form.Item>
-              <Button id="btn-form" size="large" shape="round" htmlType="submit" >
+              <Button id="btn-form" size="large" shape="round" 
+              htmlType="submit" data-testid="button"
+              disabled={state && state.users && state.users.loading_user}
+              >
                 {state && state.users && state.users.loading_user ? (
                   (<span style={{ fontStyle: "italic" }}>
                     Logging in.. <Spin style={{ color: "purple" }} size="small"/>

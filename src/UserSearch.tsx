@@ -71,6 +71,7 @@ const UserSearch : React.FC = () => {
     if (data &&  data.place.length === 0) return <div id="load"><span id="no">Reload or Search to see results</span></div>;
     if(error){
         console.log(JSON.stringify(error));
+        return <div id="load"><h1>Something went wrong.. Reload again!</h1></div>  
     }
     console.log(data);
 
