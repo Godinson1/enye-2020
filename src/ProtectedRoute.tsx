@@ -5,7 +5,7 @@ import { AuthContext } from './Auth';
 
 //Configure protected route checking state for current logged in user
 const ProtectedRoute = ({ component: Component, ...rest }: any) => {
-    const { user } = useContext(AuthContext);
+    //const { user } = useContext(AuthContext);
     return <Route
         { ...rest }
         render = {(props: any) => 
