@@ -35,6 +35,7 @@ export const logOut = (history: any) => async (dispatch: any) => {
     dispatch({ type: LOGGING_OUT });
     try {
         await auth.signOut();
+        localStorage.removeItem('authUser');
         dispatch({ type: LOGGED_OUT });
         window.location.href = '/'
     } catch(err) {

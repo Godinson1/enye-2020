@@ -9,7 +9,7 @@ export const AuthContext = React.createContext({user: null});
 
 //Define wrapper to listen for auth change and passed down data to our app
 export const AuthProvider = ({ children }: any) => {
-    const [user, setUser]  = useState<any>('');
+    const [userAuth, setUserAuth]  = useState<any>('');
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -19,15 +19,18 @@ export const AuthProvider = ({ children }: any) => {
                 email:  userAuth.email
             }
             dispatch({ type: USER_DETAIL, payload: details });
-            setUser(userAuth);
+            userAuth
+            ? localStorage.setItem('authUser', JSON.stringify(userAuth))
+            : localStorage.removeItem('authUser')
+            //setUser(userAuth);
         });
     }, []);
 
     return (
        <AuthContext.Provider
-       value = {{
-           user
-       }}
+       value = {
+          userAuth
+        }
        >
         { children }
        </AuthContext.Provider> 
