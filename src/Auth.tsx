@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }: any) => {
             userAuth
             ? localStorage.setItem('authUser', JSON.stringify(userAuth))
             : localStorage.removeItem('authUser')
-            //setUser(userAuth);
         });
     }, []);
 
