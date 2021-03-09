@@ -19,13 +19,11 @@ const NewHome: React.FC<SomeComponentProps> = ({
 
   //State for storing values
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   //Sign In User
   const login = () => {
-    setLoading(true);
     const data = { email, password };
     dispatch(LogIn(data, history));
   };

@@ -7,7 +7,7 @@ const ProtectedRoute = ({ component: Component, ...rest }: any) => {
     <Route
       {...rest}
       render={(props: any) =>
-        !!localStorage.getItem("authUser") ? (
+        !!localStorage.getItem("auth-token") ? (
           <Component {...props} />
         ) : (
           <Redirect to="/login" />

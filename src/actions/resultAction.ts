@@ -60,15 +60,15 @@ export const LogIn = (data: any, history: any) => async (dispatch: any) => {
       );
       console.log(response.data);
       dispatch({ type: SET_AUTHENTICATED });
-      //localStorage.setItem('authUser', JSON.stringify(userAuth));
+      localStorage.setItem("auth-token", JSON.stringify(response.data.token));
       dispatch({ type: USER_DETAIL, payload: response.data });
       history.push("/home");
     } catch (err) {
-      console.log(err.response);
-      /*dispatch({
+      console.log(err.response.data);
+      dispatch({
         type: ERROR_LOGIN,
         payload: signInError(err.response.data.message, data.email),
-      });*/
+      });
     }
   }
 };
@@ -118,8 +118,7 @@ export const Register = (data: any, history: any) => async (dispatch: any) => {
 export const logOut = () => async (dispatch: any) => {
   dispatch({ type: LOGGING_OUT });
   try {
-    await auth.signOut();
-    localStorage.removeItem("authUser");
+    localStorage.removeItem("auth-token");
     dispatch({ type: LOGGED_OUT });
     window.location.href = "/";
   } catch (err) {}

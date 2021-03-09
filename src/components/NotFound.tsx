@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { withRouter, RouteComponentProps } from "react-router";
-import { Form, Input, Button, Alert } from "antd";
+import { Button } from "antd";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Register as RegisterUser } from "../actions/resultAction";
 import "./styles/auth.css";
 
 //Retrieve RouteComponent props from react-router
@@ -11,24 +9,6 @@ type SomeComponentProps = RouteComponentProps;
 const Register: React.FC<SomeComponentProps> = ({
   history,
 }: RouteComponentProps) => {
-  //UseDispatch - for dispatching actions
-  const dispatch = useDispatch();
-
-  //Access global state to handle user experience
-  const state: any = useSelector((state) => state);
-
-  //State for storing values
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-
-  //Register User
-  const register = () => {
-    const data = { email, password };
-    dispatch(RegisterUser(data, history));
-  };
-
   //Cancel error alert
   const onClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     console.log(e, "I was closed.");
@@ -56,52 +36,39 @@ const Register: React.FC<SomeComponentProps> = ({
         </div>
         <div className="second-side">
           <div>
-            <h3 className="title">REGISTER</h3>
+            <h3 className="title">PAGE NOT FOUND</h3>
             <div style={{ marginTop: "-20px", fontSize: "1rem" }}>
               <span></span>
             </div>
           </div>
           <div>
             <div style={{ marginTop: "20px" }}>
-              <h4>BEGIN WITH THE CLOSE SEARCH AID</h4>
+              <h4>
+                Seems the page you are looking for does not exists or you might
+                have typed incorrectly.
+              </h4>
             </div>
-            <div className="form-container">
-              {state && state.users && state.users.error_login ? (
-                <Alert
-                  message="Login Error"
-                  description={state.users.error_login}
-                  type="error"
-                  closable
-                  style={{
-                    width: "75%",
-                    display: "inline-block",
-                    fontSize: "1.2em",
-                  }}
-                  onClose={onClose}
-                />
-              ) : (
-                ""
-              )}
-
-              <Button
-                style={{ backgroundColor: "purple", color: "white" }}
-                htmlType="submit"
-              >
-                Register
-              </Button>
+          </div>
+          <div
+            style={{
+              marginTop: "100px",
+              textAlign: "center",
+              marginBottom: "150px",
+            }}
+          >
+            <div>
+              <Link id="link" to="/home">
+                <Button
+                  style={{ backgroundColor: "purple", color: "white" }}
+                  htmlType="submit"
+                >
+                  Go back Home
+                </Button>
+              </Link>
             </div>
-            <div style={{ marginTop: "20px", textAlign: "center" }}>
-              <h3>
-                Already have an account?{" "}
-                <Link id="link" to="/login">
-                  Login Here..
-                </Link>
-              </h3>
-            </div>
-
-            <div className="footer auth">
-              <p className="footer-text">CLOSEAID - &copy; 2021</p>
-            </div>
+          </div>
+          <div className="footer auth">
+            <p className="footer-text">CLOSEAID - &copy; 2021</p>
           </div>
         </div>
       </div>
