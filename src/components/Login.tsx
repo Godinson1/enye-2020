@@ -97,7 +97,7 @@ const NewHome: React.FC<SomeComponentProps> = ({
                   <label>Password</label>
                   <Input
                     placeholder="Enter password"
-                    type="text"
+                    type="password"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                     required

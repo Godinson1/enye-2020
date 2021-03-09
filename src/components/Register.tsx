@@ -25,16 +25,10 @@ const Register: React.FC<SomeComponentProps> = ({
 
   //Register User
   const register = () => {
-    const data = { email, password };
+    const data = { email, password, firstName, lastName };
     dispatch(RegisterUser(data, history));
   };
 
-  //Cancel error alert
-  const onClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log(e, "I was closed.");
-  };
-
-  console.log(onClose);
   return (
     <div>
       <div className="auth-container">
@@ -84,7 +78,7 @@ const Register: React.FC<SomeComponentProps> = ({
                     display: "inline-block",
                     fontSize: "1.2em",
                   }}
-                  onClose={onClose}
+                  onClose={() => console.log("")}
                 />
               ) : (
                 ""
@@ -157,7 +151,9 @@ const Register: React.FC<SomeComponentProps> = ({
                     htmlType="submit"
                     onClick={() => register()}
                   >
-                    Register
+                    {state && state.users && state.users.loading_user
+                      ? "Loading..."
+                      : "Register"}
                   </Button>
                 </div>
                 <div style={{ marginTop: "20px", textAlign: "center" }}>

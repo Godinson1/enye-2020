@@ -13,7 +13,6 @@ import {
 } from "./types";
 import axios from "axios";
 import { isEmail, signInError } from "../Helpers/firebase";
-import { auth } from "../firebase";
 
 //Handle Search request
 export const Search = (data: Object, history: any) => async (dispatch: any) => {
@@ -89,26 +88,20 @@ export const Register = (data: any, history: any) => async (dispatch: any) => {
     });
   } else {
     try {
-      await auth.createUserWithEmailAndPassword(data.email, data.password);
+      const response = await axios.post(
+        "https://serene-anchorage-25424.herokuapp.com/auth/register",
+        data
+      );
+      console.log(response.data);
       dispatch({ type: SET_AUTHENTICATED });
-      auth.onAuthStateChanged((userAuth: any) => {
-        if (userAuth) {
-          const details = {
-            userId: userAuth.uid,
-            email: userAuth.email,
-          };
-          localStorage.setItem("authUser", JSON.stringify(userAuth));
-          dispatch({ type: USER_DETAIL, payload: details });
-          history.push("/home");
-        } else {
-          localStorage.removeItem("authUser");
-        }
-      });
+      localStorage.setItem("auth-token", JSON.stringify(response.data.token));
+      dispatch({ type: USER_DETAIL, payload: response.data });
+      history.push("/home");
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
       dispatch({
         type: ERROR_SIGNUP,
-        payload: signInError(err.code, data.email),
+        payload: signInError(err.response.data.message, data.email),
       });
     }
   }
