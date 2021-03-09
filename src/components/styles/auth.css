@@ -1,0 +1,161 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.first-side {
+  background: url(/public/assets/images/phoneOne.jpeg);
+  height: 100vh;
+  width: 50vw;
+  background-size: cover;
+}
+
+.second-side {
+  height: 100vh;
+  width: 50vw;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image-container .after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 50px;
+}
+
+#img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.button-container {
+  display: none;
+}
+
+.title {
+  text-align: center;
+  font-family: Roboto;
+  font-size: 2rem;
+}
+
+.form-container {
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid purple;
+  padding: 20px;
+}
+
+.footer .auth {
+  margin-top: 150px;
+}
+
+.footer-text {
+  text-align: center;
+  font-family: Roboto;
+  font-size: 0.8rem;
+}
+
+label {
+  font-weight: bold;
+}
+
+.message {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.header-title {
+  font-size: 3.5rem;
+  color: white;
+  text-align: center;
+  font-family: Roboto;
+}
+
+.header-desc {
+  margin-top: -30px;
+  font-size: 1.2rem;
+  text-align: center;
+  color: rgb(170, 168, 168);
+}
+
+#link {
+  color: purple;
+  cursor: pointer;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+@media screen and (max-width: 860px) {
+  .second-side {
+    display: none;
+  }
+
+  .first-side {
+    width: 100vw;
+  }
+
+  .image-container .after {
+    padding: 20px;
+  }
+
+  .header-title {
+    font-size: 3.5rem;
+    line-height: 4.7rem;
+  }
+
+  .button-container {
+    display: block;
+  }
+
+  #btn {
+    width: 150px;
+    height: 40px;
+    background-color: white;
+    color: purple;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: Roboto;
+    cursor: pointer;
+    border: none;
+  }
+  #btn:focus {
+    outline: none;
+    border: none;
+  }
+
+  #btn:hover {
+    background-color: purple;
+    color: white;
+  }
+}
