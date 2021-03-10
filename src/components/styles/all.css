@@ -1,0 +1,20 @@
+.all {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  padding: 100px 200px 0 200px;
+}
+
+.result-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  box-shadow: rgba(79, 79, 79, 0.07) 0px 4px 10px;
+  background-color: white;
+  transition: width 100ms ease-in-out;
+  width: 100%;
+  padding: 20px;
+  z-index: 4;
+}

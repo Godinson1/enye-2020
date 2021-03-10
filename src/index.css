@@ -26,6 +26,37 @@
   border-color: purple;
 }
 
+.ant-tabs-nav .ant-tabs-tab-active {
+  color: purple;
+  border-color: purple;
+}
+
+.ant-tabs-nav .ant-tabs-tab:hover {
+  color: purple;
+}
+
+.ant-tabs-ink-bar {
+  position: absolute;
+  background: purple;
+  pointer-events: none;
+}
+
+.ant-switch-checked {
+  background-color: purple;
+}
+
+[data-theme="compact"]
+  .site-collapse-custom-collapse
+  .site-collapse-custom-panel,
+.site-collapse-custom-collapse .site-collapse-custom-panel {
+  margin-bottom: 10px;
+  overflow: hidden;
+  background: #f7f7f7;
+  border: 0px;
+  border-radius: 2px;
+  width: 100%;
+}
+
 .main-view {
   overflow: hidden;
   background-attachment: fixed;

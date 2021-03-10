@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
-import Home from "./components/Home";
-import Result from "./components/Results";
-import Login from "./components/Login";
-import Signup from "./components/Register";
-import All from "./components/All";
-import NotFound from "./components/NotFound";
-import UserSearch from "./components/UserSearch";
-import MapLocal from "./components/MapLocal";
 import { Provider } from "react-redux";
+
+import {
+  Home,
+  Result,
+  Login,
+  AllResult,
+  NotFound,
+  Main,
+  Faq,
+  MapLocal,
+  All,
+  Signup,
+  UserSearch,
+} from "./components";
+
 import store from "./store";
 import AuthRoute from "./ProtectedRoute";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -43,7 +50,7 @@ const App: React.FC = () => {
         //Set connection message after 3 seconds
         setTimeout(() => {
           setConnection(true);
-        }, 2000);
+        }, 5000);
         return null;
       }
     };
@@ -71,6 +78,9 @@ const App: React.FC = () => {
               <Route exact path="/signup" component={Signup} />
               <Route exact path="/" component={Signup} />
               <AuthRoute path="/home" component={Home} />
+              <AuthRoute path="/main" component={Main} />
+              <AuthRoute path="/all" component={AllResult} />
+              <AuthRoute path="/faq" component={Faq} />
               <AuthRoute exact path="/search" component={Result} />
               <AuthRoute exact path="/results" component={All} />
               <AuthRoute exact path="/user-result" component={UserSearch} />
