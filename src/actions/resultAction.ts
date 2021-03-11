@@ -1,118 +1,65 @@
 //Imported Types, packages and helpers
-import {
-  LOADING,
-  SEARCH,
-  ERROR_LOGIN,
-  SET_AUTHENTICATED,
-  ERROR,
-  LOGGING_OUT,
-  ERROR_SIGNUP,
-  USER_DETAIL,
-  LOGGED_OUT,
-  USER_LOADING,
-} from "./types";
+import { LOADING, SEARCH, ERROR, GET_RESULT } from "./types";
 import axios from "axios";
-import { isEmail, signInError } from "../Helpers/firebase";
+import { LOCAL_SEARCH_ENDPOINT } from "../Helpers";
+import store from "../store";
 
 //Handle Search request
 export const Search = (data: Object, history: any) => async (dispatch: any) => {
   dispatch({ type: LOADING });
+  const token = localStorage.getItem("auth-token");
   try {
-    const response = await axios.post(
-      "https://serene-anchorage-25424.herokuapp.com/places/search",
-      data
-    );
+    const response = await axios.post(`${LOCAL_SEARCH_ENDPOINT}/search`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     console.log(response.data);
     dispatch({
       type: SEARCH,
       payload: response.data.data,
     });
-    history.push("/search");
   } catch (err) {
-    dispatch({
-      type: ERROR,
-      payload: err.response.data,
-    });
+    if (err.response) {
+      dispatch({
+        type: ERROR,
+        payload: err.response.data,
+      });
+    }
+
     console.log(err.response);
   }
 };
 
-//SignIn User
-export const LogIn = (data: any, history: any) => async (dispatch: any) => {
-  //Dispatch loading user on button click and store form
-  dispatch({ type: USER_LOADING });
+interface searchedData {
+  page: number | undefined;
+  pagination: number;
+}
 
-  //Check if Invalid email - If true, return error else check
-  //if user is online and connected to the internet
-  //If connected, Sign in user else return connection message
-  const isValidEmail = isEmail(data.email);
-  if (!isValidEmail) {
-    dispatch({
-      type: ERROR_LOGIN,
-      payload: "Must be a valid email address",
-    });
-  } else {
-    try {
-      const response = await axios.post(
-        "https://serene-anchorage-25424.herokuapp.com/auth/login",
-        data
-      );
-      console.log(response.data);
-      dispatch({ type: SET_AUTHENTICATED });
-      localStorage.setItem("auth-token", JSON.stringify(response.data.token));
-      dispatch({ type: USER_DETAIL, payload: response.data });
-      history.push("/home");
-    } catch (err) {
-      console.log(err.response.data);
-      dispatch({
-        type: ERROR_LOGIN,
-        payload: signInError(err.response.data.message, data.email),
-      });
-    }
-  }
-};
-
-//Register User
-export const Register = (data: any, history: any) => async (dispatch: any) => {
-  //Dispatch loading user on button click and store form
-  dispatch({ type: USER_LOADING });
-
-  //Check if Invalid email - If true, return error else check
-  //if user is online and connected to the internet
-  //If connected, Sign in user else return connection message
-  const isValidEmail = isEmail(data.email);
-  if (!isValidEmail) {
-    dispatch({
-      type: ERROR_SIGNUP,
-      payload: "Must be a valid email address",
-    });
-  } else {
-    try {
-      const response = await axios.post(
-        "https://serene-anchorage-25424.herokuapp.com/auth/register",
-        data
-      );
-      console.log(response.data);
-      dispatch({ type: SET_AUTHENTICATED });
-      localStorage.setItem("auth-token", JSON.stringify(response.data.token));
-      dispatch({ type: USER_DETAIL, payload: response.data });
-      history.push("/home");
-    } catch (err) {
-      console.log(err.response.data);
-      dispatch({
-        type: ERROR_SIGNUP,
-        payload: signInError(err.response.data.message, data.email),
-      });
-    }
-  }
-};
-
-//Logout User
-export const logOut = () => async (dispatch: any) => {
-  dispatch({ type: LOGGING_OUT });
+//Retrieve Search data
+export const getSearchedData = (data: searchedData) => async (
+  dispatch: typeof store.dispatch
+) => {
+  dispatch({ type: LOADING });
+  const token = localStorage.getItem("auth-token");
   try {
-    localStorage.removeItem("auth-token");
-    dispatch({ type: LOGGED_OUT });
-    window.location.href = "/";
-  } catch (err) {}
+    const response = await axios.post(`${LOCAL_SEARCH_ENDPOINT}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response.data);
+    dispatch({
+      type: GET_RESULT,
+      payload: response.data,
+    });
+  } catch (err) {
+    console.log(err.response);
+    if (err.response) {
+      dispatch({
+        type: ERROR,
+        payload: err.response.data,
+      });
+    }
+  }
 };

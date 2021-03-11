@@ -1,250 +1,176 @@
-import React, { useState, useEffect } from "react";
-import { Select, Input, Modal, Spin, Button, Form, AutoComplete } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import img from "./images/imgs.png";
-import { Search, logOut } from "../actions/resultAction";
+import React, { useState } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
-import { myFunc } from "../Helpers/autocomplete";
+import { Form, Input, Button, Alert } from "antd";
 import { Link } from "react-router-dom";
-import { auth } from "../firebase";
-import { USER_DETAIL } from "../actions/types";
+import { useDispatch, useSelector } from "react-redux";
+import { Register as RegisterUser } from "../actions/auth";
+import "./styles/auth.css";
 
 //Retrieve RouteComponent props from react-router
 type SomeComponentProps = RouteComponentProps;
-
-//Main Home Functional Component
 const Home: React.FC<SomeComponentProps> = ({
   history,
 }: RouteComponentProps) => {
-  //Get dispatch hook for dispatching actions and also access state
-  const dispatch: any = useDispatch();
-  const answer: any = useSelector((state) => state);
+  //UseDispatch - for dispatching actions
+  const dispatch = useDispatch();
 
-  //Create interface for State - defining object types
-  interface State {
-    latitude: number;
-    longitude: number;
-  }
+  //Access global state to handle user experience
+  const state: any = useSelector((state) => state);
 
-  //Ensure user's data is persisted - case of on reload
-  useEffect(() => {
-    auth.onAuthStateChanged((userAuth: any) => {
-      if (userAuth) {
-        const details = {
-          userId: userAuth.uid,
-          email: userAuth.email,
-        };
-        localStorage.setItem("authUser", JSON.stringify(userAuth));
-        dispatch({ type: USER_DETAIL, payload: details });
-      } else {
-        localStorage.removeItem("authUser");
-      }
-    });
-  }, [dispatch]);
+  //State for storing values
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
 
-  //ALl states for storing values
-  const [state, setState] = useState<State>({
-    latitude: 0,
-    longitude: 0,
-  });
-  const [connection, setConnection] = useState<boolean>(false);
-  const [internet, setInternet] = useState<boolean>(false);
-  const [options, setOptions] = useState<{ value: string }[]>([]);
-
-  //Use-Effect (React-Hook) for retrieving user's current location on
-  //component mount
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        console.log(position);
-        setState((state) => ({
-          ...state,
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        }));
-      },
-      (error) => {
-        console.log("Error getting coordinates", error);
-      }
-    );
-  }, []);
-
-  //Validate Select (km) dropdown
-  const validateMessages = {
-    required: "Select distance!",
+  //Register User
+  const register = () => {
+    const data = { email, password, firstName, lastName };
+    dispatch(RegisterUser(data, history));
   };
-
-  //Implement autocomplete based on app's criteria with an helper function
-  //myFunc
-  const handleSearch = (value: string) => {
-    setOptions(!value ? [] : [{ value }, { value: myFunc(value) }]);
-  };
-
-  //Get values from form and also userId from state
-  //Check if user is online and connected to the internet then dispatch
-  //Search Action
-  const onFinish = (values: any) => {
-    const data = {
-      query: values.query.query,
-      latitude: state.latitude,
-      longitude: state.longitude,
-      distance: values.distance.distance.value,
-      userId: answer.users.user.userId,
-    };
-    if (navigator.onLine) {
-      fetch("https://www.google.com/", {
-        // Used Google because of good uptime
-        mode: "no-cors",
-      })
-        .then(() => {
-          dispatch(Search(data, history));
-        })
-        .catch(() => {
-          setInternet(true);
-        });
-    } else {
-      //Set connection message after 3 seconds
-      setTimeout(() => {
-        setConnection(true);
-      }, 3000);
-      return null;
-    }
-  };
-
-  //Destructure Option from Select
-  const { Option } = Select;
 
   return (
     <div>
-      <div className="main-view-overlay">
-        <div className="header">
-          <div className="main-view">
-            <div className="head">
-              <li className="logo1">
-                <h1>closeSearch</h1>
-              </li>
-              <li
-                className="logo1"
-                style={{ float: "left", padding: "10px 20px 0 200px" }}
-              >
-                {answer && answer.users && answer.users.error ? (
-                  <span style={{ color: "red", fontSize: "1.4em" }}>
-                    {answer.users.error.error}
-                  </span>
-                ) : (
-                  ""
-                )}
-              </li>
-              <li
-                className="logo1"
-                style={{ float: "right", padding: "9px 20px 0 0" }}
-              >
-                <Form onFinish={onFinish} validateMessages={validateMessages}>
-                  <Input.Group compact>
-                    <Form.Item
-                      name={["distance", "distance"]}
-                      rules={[{ required: true }]}
-                    >
-                      <Select
-                        labelInValue
-                        className="select"
-                        placeholder="Select Km"
-                      >
-                        <Option value="1000">1km</Option>
-                        <Option value="2000">2km</Option>
-                        <Option value="4000">4km</Option>
-                        <Option value="5000">5km</Option>
-                        <Option value="10000">10km</Option>
-                        <Option value="15000">15km</Option>
-                        <Option value="20000">20km</Option>
-                      </Select>
-                    </Form.Item>
-                    <Form.Item name={["query", "query"]}>
-                      <AutoComplete
-                        options={options}
-                        style={{ width: 400, borderColor: "purple" }}
-                        onSearch={handleSearch}
-                        className="auto-complete"
-                      >
-                        <Input
-                          placeholder="Search hospitals, clinics, pharmacies & medical offices"
-                          className="input"
-                          required
-                        />
-                      </AutoComplete>
-                    </Form.Item>
-                    <Form.Item>
-                      <Button
-                        className="btn"
-                        htmlType="submit"
-                        disabled={
-                          answer && answer.users && answer.users.loading
-                        }
-                      >
-                        {answer && answer.users && answer.users.loading ? (
-                          <Spin style={{ color: "purple" }} size="small" />
-                        ) : (
-                          "Search"
-                        )}
-                      </Button>
-                    </Form.Item>
-                  </Input.Group>
-                </Form>
-              </li>
-            </div>
-            <div className="cover">
-              <div className="so">
+      <div className="auth-container">
+        <div className="first-side">
+          <div className="image-container">
+            <img id="img" src="/assets/images/phoneOne.jpeg" alt="auth" />
+            <div className="after">
+              <div className="message">
                 <div>
-                  <h1 className="h1-header">
-                    Search <span className="span">Aid</span> Closer to You
-                  </h1>
-                  <p id="p-header">
-                    Find hospitals, clinics, pharmacies and medical offices near
-                    you
-                    <br />
+                  <h1 className="header-title">CLOSE SEARCH</h1>
+                  <p className="header-desc">
+                    Find hospitals, clinics and medical offices close to you
+                    without hassle.
                   </p>
-                  <p className="b-header">
-                    <Link to="/user-result">
-                      <Button size="large" shape="round" id="btn-all">
-                        My Searched Results
-                      </Button>
+                  <div className="">
+                    <Link to="/signup">
+                      <div className="button-container">
+                        <div>
+                          <button id="btn">Get Started</button>
+                        </div>
+                      </div>
                     </Link>
-                  </p>
-                </div>
-                <div className="image">
-                  <img src={img} alt="closeSeach" />
+                  </div>
                 </div>
               </div>
-              <p className="footer" onClick={() => dispatch(logOut())}>
-                {answer && answer.users && answer.users.user ? (
-                  <span style={{ fontStyle: "italic" }}>
-                    {answer.users.user.email} - Logout
-                  </span>
-                ) : (
-                  "closeSearch - Joseph Godwin (Enye)"
-                )}
-              </p>
-
-              <Modal
-                title="Connectivity Issue"
-                centered
-                visible={connection}
-                footer={null}
-                onCancel={() => setConnection(false)}
-              >
-                <p>Ensure you are connected to the internet and try again!</p>
-              </Modal>
-              <Modal
-                title="No Internet"
-                centered
-                visible={internet}
-                footer={null}
-                onCancel={() => setInternet(false)}
-              >
-                <p>Kindly Turn on WiFi or Data connection and try again!</p>
-              </Modal>
             </div>
-            <div></div>
+          </div>
+        </div>
+        <div className="second-side">
+          <div>
+            <h3 className="title">REGISTER</h3>
+            <div style={{ marginTop: "-20px", fontSize: "1rem" }}>
+              <span></span>
+            </div>
+          </div>
+          <div>
+            <div style={{ marginTop: "20px" }}>
+              <h4>BEGIN WITH THE CLOSE SEARCH AID</h4>
+            </div>
+            <div className="form-container">
+              {state && state.users && state.users.error_login ? (
+                <Alert
+                  message="Login Error"
+                  description={state.users.error_login}
+                  type="error"
+                  closable
+                  style={{
+                    width: "75%",
+                    display: "inline-block",
+                    fontSize: "1.2em",
+                  }}
+                  onClose={() => console.log("")}
+                />
+              ) : (
+                ""
+              )}
+
+              <Form>
+                <div style={{ width: 300 }}>
+                  <label>First Name</label>
+                  <Input
+                    onChange={(e) => setFirstName(e.target.value)}
+                    type="text"
+                    value={firstName}
+                    defaultValue=""
+                    required
+                    placeholder="Enter first name"
+                  />
+                </div>
+                <div style={{ marginTop: "5px" }}>
+                  <label>Last Name</label>
+                  <Input
+                    onChange={(e) => setLastName(e.target.value)}
+                    type="text"
+                    value={lastName}
+                    defaultValue=""
+                    required
+                    placeholder="Enter last name"
+                  />
+                </div>
+                <div style={{ marginTop: "5px" }}>
+                  <label>Email</label>
+                  <Input
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="text"
+                    value={email}
+                    defaultValue=""
+                    required
+                    placeholder="Enter email address"
+                  />
+                </div>
+                <div style={{ marginTop: "5px" }}>
+                  <label>Password</label>
+                  <Input
+                    onChange={(e) => setPassword(e.target.value)}
+                    type="text"
+                    value={password}
+                    defaultValue=""
+                    required
+                    placeholder="Enter password"
+                  />
+                </div>
+
+                <div
+                  style={{
+                    marginTop: "10px",
+                    alignItems: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Button
+                    disabled={
+                      firstName === "" ||
+                      lastName === "" ||
+                      email === "" ||
+                      password === ""
+                        ? true
+                        : false
+                    }
+                    style={{ backgroundColor: "purple", color: "white" }}
+                    htmlType="submit"
+                    onClick={() => register()}
+                  >
+                    {state && state.users && state.users.loading_user
+                      ? "Loading..."
+                      : "Register"}
+                  </Button>
+                </div>
+                <div style={{ marginTop: "20px", textAlign: "center" }}>
+                  <h3>
+                    Already have an account?{" "}
+                    <Link id="link" to="/login">
+                      Login Here..
+                    </Link>
+                  </h3>
+                </div>
+              </Form>
+            </div>
+            <div className="footer auth">
+              <p className="footer-text">CLOSEAID - &copy; 2021</p>
+            </div>
           </div>
         </div>
       </div>

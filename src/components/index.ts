@@ -1,5 +1,5 @@
 import Home from "./Home";
-import Result from "./Results";
+import Results from "./Results";
 import Login from "./Login";
 import Signup from "./Register";
 import All from "./All";
@@ -9,10 +9,11 @@ import NotFound from "./NotFound";
 import MapLocal from "./MapLocal";
 import Faq from "./Faq";
 import UserSearch from "./UserSearch";
+import Result from "./Result";
 
 export {
   Home,
-  Result,
+  Results,
   Login,
   AllResult,
   NotFound,
@@ -21,5 +22,6 @@ export {
   Faq,
   MapLocal,
   All,
+  Result,
   Signup,
 };

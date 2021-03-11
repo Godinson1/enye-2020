@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router";
 import { Form, Input, Button, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Register as RegisterUser } from "../actions/resultAction";
+import { Register as RegisterUser } from "../actions/auth";
 import "./styles/auth.css";
 
 //Retrieve RouteComponent props from react-router
@@ -32,7 +32,7 @@ const Register: React.FC<SomeComponentProps> = ({
   return (
     <div>
       <div className="auth-container">
-        <div className="first-side">
+        <div className="register-first-side">
           <div className="image-container">
             <img id="img" src="/assets/images/phoneOne.jpeg" alt="auth" />
             <div className="after">
@@ -55,7 +55,7 @@ const Register: React.FC<SomeComponentProps> = ({
             </div>
           </div>
         </div>
-        <div className="second-side">
+        <div className="register-second-side">
           <div>
             <h3 className="title">REGISTER</h3>
             <div style={{ marginTop: "-20px", fontSize: "1rem" }}>

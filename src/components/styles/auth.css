@@ -21,6 +21,40 @@
   align-items: center;
 }
 
+.login-first-side {
+  background: url(/public/assets/images/phoneOne.jpeg);
+  height: 100vh;
+  width: 50vw;
+  background-size: cover;
+}
+
+.login-second-side {
+  height: 100vh;
+  width: 50vw;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-first-side {
+  background: url(/public/assets/images/phoneOne.jpeg);
+  height: 100vh;
+  width: 50vw;
+  background-size: cover;
+}
+
+.register-second-side {
+  height: 100vh;
+  width: 50vw;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .image-container {
   position: relative;
   width: 100%;
@@ -39,17 +73,13 @@
   align-items: center;
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
-  padding: 50px;
+  padding: 20px;
 }
 
 #img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.button-container {
-  display: none;
 }
 
 .title {
@@ -88,6 +118,7 @@ label {
   justify-content: flex-start;
   flex-direction: column;
   align-items: flex-start;
+  margin-top: 5px;
 }
 
 .header-title {
@@ -121,8 +152,28 @@ label {
     display: none;
   }
 
+  .login-second-side {
+    width: 100vw;
+  }
+
+  .register-second-side {
+    width: 100vw;
+  }
+
+  .register-first-side {
+    display: none;
+  }
+
   .first-side {
     width: 100vw;
+  }
+
+  .login-first-side {
+    display: none;
+  }
+
+  .form-container {
+    width: 100%;
   }
 
   .image-container .after {
@@ -135,7 +186,10 @@ label {
   }
 
   .button-container {
-    display: block;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   #btn {

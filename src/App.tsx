@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import {
   Home,
   Result,
+  Results,
   Login,
   AllResult,
   NotFound,
@@ -76,12 +77,13 @@ const App: React.FC = () => {
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
-              <Route exact path="/" component={Signup} />
+              <Route exact path="/" component={Home} />
               <AuthRoute path="/home" component={Home} />
               <AuthRoute path="/main" component={Main} />
               <AuthRoute path="/all" component={AllResult} />
               <AuthRoute path="/faq" component={Faq} />
-              <AuthRoute exact path="/search" component={Result} />
+              <AuthRoute exact path="/search" component={Results} />
+              <AuthRoute exact path="/result" component={Result} />
               <AuthRoute exact path="/results" component={All} />
               <AuthRoute exact path="/user-result" component={UserSearch} />
               <AuthRoute exact path="/maps" component={MapLocal} />

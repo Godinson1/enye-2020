@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { Menu, Dropdown, Button } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import { logOut } from "../actions/auth";
 
 //import style
 import "./styles/nav.css";
@@ -23,7 +24,7 @@ const Navbar: React.FC = () => {
     <Menu>
       <Menu.Item>Clear Data</Menu.Item>
       <Menu.Item>Change Password</Menu.Item>
-      <Menu.Item onClick={() => alert("clicked")}>Logout</Menu.Item>
+      <Menu.Item onClick={logOut}>Logout</Menu.Item>
     </Menu>
   );
 

@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router";
 import { Form, Input, Button, Alert, Checkbox } from "antd";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
-import { LogIn } from "../actions/resultAction";
+import { LogIn } from "../actions/auth";
 import "./styles/auth.css";
 
 //Retrieve RouteComponent props from react-router
@@ -19,13 +19,17 @@ const NewHome: React.FC<SomeComponentProps> = ({
 
   //State for storing values
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>(
+    localStorage.getItem("user-email") || ""
+  );
+  const [password, setPassword] = useState<string>(
+    localStorage.getItem("user-password") || ""
+  );
 
   //Sign In User
   const login = () => {
     const data = { email, password };
-    dispatch(LogIn(data, history));
+    dispatch(LogIn(data, history, rememberMe));
   };
 
   //Cancel error alert
@@ -37,7 +41,7 @@ const NewHome: React.FC<SomeComponentProps> = ({
   return (
     <div>
       <div className="auth-container">
-        <div className="first-side">
+        <div className="login-first-side">
           <div className="image-container">
             <img id="img" src="/assets/images/phoneOne.jpeg" alt="auth" />
             <div className="after">
@@ -53,7 +57,7 @@ const NewHome: React.FC<SomeComponentProps> = ({
             </div>
           </div>
         </div>
-        <div className="second-side">
+        <div className="login-second-side">
           <div>
             <h3 className="title">LOGIN</h3>
             <div style={{ marginTop: "-20px", fontSize: "1rem" }}>
@@ -107,6 +111,7 @@ const NewHome: React.FC<SomeComponentProps> = ({
                   <Checkbox
                     onChange={() => setRememberMe(!rememberMe)}
                     value={rememberMe}
+                    checked={localStorage.getItem("user-email") ? true : false}
                   >
                     Remember me
                   </Checkbox>
