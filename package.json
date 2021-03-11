@@ -55,7 +55,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "tsx react-scripts build",
+    "build": "tsc react-scripts build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
