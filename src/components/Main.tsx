@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
 
@@ -32,28 +31,12 @@ const Main: React.FC<SomeComponentProps> = ({
 }: RouteComponentProps) => {
   const [Location, setLocation] = useState<boolean>(false);
   const [hospital, setHospital] = useState<number>(0);
-  const [latitude, setLatitude] = useState<number>(0);
-  const [longitude, setLongitude] = useState<number>(0);
   const [pharmacy, setPharmarcy] = useState<number>(0);
   const [medical, setMedical] = useState<number>(0);
   const [clinic, setClinic] = useState<number>(0);
   const [radius, setRadius] = useState<string>("");
 
-  const dispatch = useDispatch();
   const { TabPane } = Tabs;
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        console.log(position);
-        setLongitude(position.coords.longitude);
-        setLatitude(position.coords.latitude);
-      },
-      (error) => {
-        console.log("Error getting coordinates", error);
-      }
-    );
-  }, []);
 
   const { Option } = Select;
 
