@@ -111,7 +111,6 @@ const NewHome: React.FC<SomeComponentProps> = ({
                   <Checkbox
                     onChange={() => setRememberMe(!rememberMe)}
                     value={rememberMe}
-                    checked={localStorage.getItem("user-email") ? true : false}
                   >
                     Remember me
                   </Checkbox>

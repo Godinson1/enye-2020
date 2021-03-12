@@ -102,11 +102,10 @@ li {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: white;
   overflow-x: hidden;
   transition: 0.5s;
-  z-index: 7;
+  z-index: 8;
 }
 
 .overlay:hover,
@@ -127,7 +126,7 @@ li {
   padding: 10px;
   text-decoration: none;
   font-size: 26px;
-  color: white;
+  color: black;
   display: block;
   transition: 0.3s;
   cursor: pointer;
@@ -142,14 +141,14 @@ li {
 
 /*-------------------------------------------------------------*/
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 769px) {
   .overlay a {
     font-size: 20px;
   }
 
   .menu-icon {
     visibility: visible;
-    margin: -20px 5px 0 0;
+    margin: -15px 15px 0 0;
   }
 
   .nav {
@@ -157,7 +156,7 @@ li {
     height: 80px;
     gap: 50px;
     padding: 0;
-    z-index: 5;
+    z-index: 8;
   }
 
   .nav-menu {

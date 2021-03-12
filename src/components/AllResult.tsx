@@ -233,7 +233,7 @@ const AllResult: React.FC<SomeComponentProps> = ({
                 </div>
               ) : (
                 <div className="nodata">
-                  <div className="hh">
+                  <div>
                     <Empty
                       image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
                       imageStyle={{

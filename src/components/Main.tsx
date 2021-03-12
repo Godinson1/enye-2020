@@ -46,6 +46,8 @@ const Main: React.FC<SomeComponentProps> = ({
     );
   };
 
+  console.log(Location);
+
   return (
     <div>
       <Navbar />
@@ -65,7 +67,6 @@ const Main: React.FC<SomeComponentProps> = ({
                 >
                   <Switch
                     className="switch"
-                    checked={Location}
                     onChange={() => setLocation(!location)}
                   />
                 </Tooltip>

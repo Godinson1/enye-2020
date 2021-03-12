@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { Menu, Dropdown, Button } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { Menu, Dropdown, Button, Divider } from "antd";
+import { DownOutlined, CloseOutlined, MenuOutlined } from "@ant-design/icons";
 import { logOut } from "../actions/auth";
 
 //import style
@@ -33,9 +33,13 @@ const Navbar: React.FC = () => {
       <div id="myNav" className="overlay">
         <div className="overlay-content">
           <Link to="/main">Home</Link>
+          <Divider className="divider" style={{ backgroundColor: "purple" }} />
           <Link to="/all">Searched Results</Link>
+          <Divider className="divider" style={{ backgroundColor: "purple" }} />
           <Link to="/all">Favourites</Link>
+          <Divider className="divider" style={{ backgroundColor: "purple" }} />
           <Link to="/faq">Faq</Link>
+          <Divider className="divider" style={{ backgroundColor: "purple" }} />
         </div>
       </div>
       <div className="nav">
@@ -48,6 +52,7 @@ const Navbar: React.FC = () => {
               HOME
             </NavLink>
           </li>
+
           <li>
             <NavLink className="link" to="/all" activeClassName="selected">
               SEARCHED RESULTS
@@ -66,7 +71,7 @@ const Navbar: React.FC = () => {
             </Dropdown>
           </li>
           <li className="menu-icon" onClick={openNav}>
-            {nav ? "X" : "OPEN"}
+            {nav ? <CloseOutlined /> : <MenuOutlined />}
           </li>
         </div>
       </div>
