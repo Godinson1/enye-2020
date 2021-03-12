@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
-import { Menu, Dropdown, Button, Divider } from "antd";
+import { Menu, Dropdown, Button } from "antd";
 import { DownOutlined, CloseOutlined, MenuOutlined } from "@ant-design/icons";
 import { logOut } from "../actions/auth";
 
@@ -9,6 +10,7 @@ import "./styles/nav.css";
 
 const Navbar: React.FC = () => {
   const [nav, setNav] = useState(false);
+  const dispatch = useDispatch();
 
   const openNav = () => setNav(!nav);
 
@@ -24,7 +26,7 @@ const Navbar: React.FC = () => {
     <Menu>
       <Menu.Item>Clear Data</Menu.Item>
       <Menu.Item>Change Password</Menu.Item>
-      <Menu.Item onClick={logOut}>Logout</Menu.Item>
+      <Menu.Item onClick={dispatch(logOut)}>Logout</Menu.Item>
     </Menu>
   );
 
@@ -33,13 +35,13 @@ const Navbar: React.FC = () => {
       <div id="myNav" className="overlay">
         <div className="overlay-content">
           <Link to="/main">Home</Link>
-          <Divider className="divider" style={{ backgroundColor: "purple" }} />
           <Link to="/all">Searched Results</Link>
-          <Divider className="divider" style={{ backgroundColor: "purple" }} />
           <Link to="/all">Favourites</Link>
-          <Divider className="divider" style={{ backgroundColor: "purple" }} />
           <Link to="/faq">Faq</Link>
-          <Divider className="divider" style={{ backgroundColor: "purple" }} />
+          <br />
+          <Button onClick={() => dispatch(logOut())} className="btn">
+            LOGOUT
+          </Button>
         </div>
       </div>
       <div className="nav">

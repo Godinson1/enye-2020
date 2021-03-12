@@ -117,7 +117,13 @@ const NewHome: React.FC<SomeComponentProps> = ({
                 </div>
                 <div style={{ marginTop: "20px" }}>
                   <Button
-                    disabled={email === "" || password === "" ? true : false}
+                    disabled={
+                      email === "" ||
+                      password === "" ||
+                      state.users.loading_user
+                        ? true
+                        : false
+                    }
                     style={{ backgroundColor: "purple", color: "white" }}
                     onClick={() => login()}
                   >

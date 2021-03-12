@@ -118,7 +118,6 @@ li {
   top: 25%;
   width: 100%;
   text-align: center;
-  margin-top: 100px;
   font-weight: bold;
 }
 
@@ -148,12 +147,11 @@ li {
 
   .menu-icon {
     visibility: visible;
-    margin: -15px 15px 0 0;
+    margin: auto 15px auto 0;
   }
 
   .nav {
     justify-content: space-around;
-    height: 80px;
     gap: 50px;
     padding: 0;
     z-index: 8;
@@ -168,12 +166,15 @@ li {
   }
 
   .logo-menu {
-    margin-left: -170px;
+    margin-left: 15px;
+  }
+
+  .logoName {
+    font-size: 1rem;
   }
 
   .menu-icon {
     visibility: visible;
-    margin-bottom: 5px;
   }
 
   .nav-menu {
@@ -186,6 +187,5 @@ li {
 
 @media screen and (min-width: 410px) and (max-width: 420px) {
   .menu-icon {
-    margin-top: -40px;
   }
 }

@@ -1,4 +1,4 @@
-import { getUserMessage } from "./general";
+import { getUserMessage, getLoadingType } from "./general";
 import {
   PHARMACY,
   CLINIC,
@@ -10,6 +10,7 @@ import {
 
 export {
   getUserMessage,
+  getLoadingType,
   PHARMACY,
   CLINIC,
   MEDICAL,

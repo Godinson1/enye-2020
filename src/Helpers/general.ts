@@ -1,3 +1,10 @@
+import {
+  LOADING_CLINIC,
+  LOADING_MEDICAL,
+  LOADING_PHARMACY,
+  LOADING_HOSPITAL,
+} from "../actions/types";
+
 const getUserMessage = () => {
   var data = [
       [22, "It's bed time, Get some sleep."],
@@ -14,4 +21,16 @@ const getUserMessage = () => {
   }
 };
 
-export { getUserMessage };
+const getLoadingType = (query: string) => {
+  return query === "hospital"
+    ? LOADING_HOSPITAL
+    : query === "clinic"
+    ? LOADING_CLINIC
+    : query === "medical"
+    ? LOADING_MEDICAL
+    : query === "pharmacy"
+    ? LOADING_PHARMACY
+    : "LOADING";
+};
+
+export { getUserMessage, getLoadingType };

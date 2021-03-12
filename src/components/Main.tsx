@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router";
 
 import {
@@ -20,6 +20,7 @@ import {
   CLINIC,
   PHARMACY,
 } from "../Helpers";
+import { Search } from "../actions/resultAction";
 import Navbar from "./Navbar";
 import "./styles/main.css";
 
@@ -32,18 +33,41 @@ const Main: React.FC<SomeComponentProps> = ({
   const [Location, setLocation] = useState<boolean>(false);
   const [hospital, setHospital] = useState<number>(0);
   const [pharmacy, setPharmarcy] = useState<number>(0);
+  const [latitude, setLatitude] = useState<number>(0);
+  const [longitude, setLongitude] = useState<number>(0);
   const [medical, setMedical] = useState<number>(0);
   const [clinic, setClinic] = useState<number>(0);
   const [radius, setRadius] = useState<string>("");
+
+  const dispatch = useDispatch();
+  const state: RootStateOrAny = useSelector<RootStateOrAny>(
+    (state) => state.users
+  );
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLongitude(position.coords.longitude);
+        setLatitude(position.coords.latitude);
+      },
+      (error) => {
+        console.log("Error getting coordinates", error);
+      }
+    );
+  }, []);
 
   const { TabPane } = Tabs;
 
   const { Option } = Select;
 
   const makeRequest = (query: string, radiusCheck: number) => {
-    history.push(
-      `/result?radius=${radius}&radCheck=${radiusCheck}&query=${query}`
-    );
+    const requestData = {
+      query,
+      latitude,
+      longitude,
+      distance: radiusCheck === 1 ? 1000 : parseInt(radius),
+    };
+    dispatch(Search(requestData, history));
   };
 
   console.log(Location);
@@ -127,22 +151,19 @@ const Main: React.FC<SomeComponentProps> = ({
                       ""
                     )}
                     <div className="feature-content-btn">
-                      <Link
-                        to={`/result?radius=${radius}&radCheck=${hospital}&query=${HOSPITAL}`}
+                      <Button
+                        disabled={
+                          hospital === 0
+                            ? true
+                            : hospital === 2 && radius === ""
+                            ? true
+                            : false
+                        }
+                        className="btn"
+                        onClick={() => makeRequest(HOSPITAL, hospital)}
                       >
-                        <Button
-                          disabled={
-                            hospital === 0
-                              ? true
-                              : hospital === 2 && radius === ""
-                              ? true
-                              : false
-                          }
-                          className="btn"
-                        >
-                          Search
-                        </Button>
-                      </Link>
+                        {state.loading_hosptal ? "Loading..." : "Search"}
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -200,7 +221,7 @@ const Main: React.FC<SomeComponentProps> = ({
                         className="btn"
                         onClick={() => makeRequest(PHARMACY, pharmacy)}
                       >
-                        Search
+                        {state.loading_pharmacy ? "Loading..." : "Search"}
                       </Button>
                     </div>
                   </div>
@@ -259,7 +280,7 @@ const Main: React.FC<SomeComponentProps> = ({
                         className="btn"
                         onClick={() => makeRequest(CLINIC, clinic)}
                       >
-                        Search
+                        {state.loading_clinic ? "Loading..." : "Search"}
                       </Button>
                     </div>
                   </div>
@@ -318,7 +339,7 @@ const Main: React.FC<SomeComponentProps> = ({
                         className="btn"
                         onClick={() => makeRequest(MEDICAL, medical)}
                       >
-                        Search
+                        {state.loading_medical ? "Loading..." : "Search"}
                       </Button>
                     </div>
                   </div>

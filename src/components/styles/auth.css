@@ -147,6 +147,10 @@ label {
   gap: 20px;
 }
 
+.button-container {
+  display: none;
+}
+
 @media screen and (max-width: 860px) {
   .second-side {
     display: none;

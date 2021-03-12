@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
+import { useSelector, RootStateOrAny } from "react-redux";
 import getDistance from "geolib/es/getDistance";
 import { withRouter, RouteComponentProps } from "react-router";
 import { Divider, Rate, Tooltip, Empty, Button } from "antd";
 import queryString from "query-string";
-import { Search } from "../actions/resultAction";
 import {
   HeatMapOutlined,
   CarOutlined,
@@ -25,11 +24,11 @@ const AllResult: React.FC<SomeComponentProps> = ({
   const [longitude, setLongitude] = useState<number>(0);
   //Access global state to handle user experience
   const state: RootStateOrAny = useSelector((state) => state);
-  const dispatch = useDispatch();
-  //Access Place name, latitude and longitude from url
-  const { radius, query, radCheck } = queryString.parse(location.search);
 
-  const radiusCheck = parseInt(radCheck as string);
+  //Access Place name, latitude and longitude from url
+  const { query } = queryString.parse(location.search);
+
+  const searchKey = query as string;
   console.log(state.users.details);
 
   useEffect(() => {
@@ -37,24 +36,15 @@ const AllResult: React.FC<SomeComponentProps> = ({
       (position) => {
         setLongitude(position.coords.longitude);
         setLatitude(position.coords.latitude);
-        const requestData = {
-          query,
-          latitude,
-          longitude,
-          distance: radiusCheck === 1 ? 1000 : parseInt(radius as string),
-        };
-        if (query && latitude && longitude && radius) {
-          dispatch(Search(requestData, history));
-        }
       },
       (error) => {
         console.log("Error getting coordinates", error);
       }
     );
-  }, [dispatch, history, latitude, longitude, query, radius, radiusCheck]);
+  }, []);
 
   return (
-    <div>
+    <div style={{ overflowX: "hidden" }}>
       <Navbar />
       <div className="all">
         <div className="result-container">
@@ -77,7 +67,7 @@ const AllResult: React.FC<SomeComponentProps> = ({
                     </span>
                     <br />
                     <span id="base-text">
-                      Search Feature: <b>Hospital</b>
+                      Search Feature: <b>{searchKey}</b>
                     </span>
                   </div>
                   <div className="flex-wrap">
