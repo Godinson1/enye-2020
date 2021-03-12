@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
     <Menu>
       <Menu.Item>Clear Data</Menu.Item>
       <Menu.Item>Change Password</Menu.Item>
-      <Menu.Item onClick={dispatch(logOut)}>Logout</Menu.Item>
+      <Menu.Item onClick={() => dispatch(logOut)}>Logout</Menu.Item>
     </Menu>
   );
 

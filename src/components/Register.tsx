@@ -56,7 +56,7 @@ const Register: React.FC<SomeComponentProps> = ({
           </div>
         </div>
         <div className="register-second-side">
-          <div>
+          <div style={{ marginBottom: "30px" }}>
             <h3 className="title">REGISTER</h3>
             <div style={{ marginTop: "-20px", fontSize: "1rem" }}>
               <span></span>

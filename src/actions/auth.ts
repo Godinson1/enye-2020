@@ -97,7 +97,7 @@ export const Register = (data: any, history: any) => async (dispatch: any) => {
 };
 
 //Logout User
-export const logOut = () => async (dispatch: typeof store.dispatch) => {
+export const logOut = () => async (dispatch: any) => {
   dispatch({ type: LOGGING_OUT });
   try {
     localStorage.removeItem("auth-token");

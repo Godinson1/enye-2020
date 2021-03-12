@@ -58,7 +58,7 @@ const NewHome: React.FC<SomeComponentProps> = ({
           </div>
         </div>
         <div className="login-second-side">
-          <div>
+          <div style={{ marginBottom: "30px" }}>
             <h3 className="title">LOGIN</h3>
             <div style={{ marginTop: "-20px", fontSize: "1rem" }}>
               <span></span>
@@ -68,6 +68,7 @@ const NewHome: React.FC<SomeComponentProps> = ({
             <div style={{ marginTop: "20px" }}>
               <h4>WELCOME BACK</h4>
             </div>
+
             <div className="form-container">
               {state && state.users && state.users.error_login ? (
                 <Alert
