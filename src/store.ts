@@ -6,7 +6,7 @@ import rootReducer from "./reducer/index";
 const initialState = {};
 const middleware = [thunk];
 const composeCheck =
-  process.env.NODE_ENV === "production"
+  process.env.NODE_ENV !== "production"
     ? compose(
         applyMiddleware(...middleware),
         (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
