@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
+import JwtDecode from "jwt-decode";
 
 import {
   Home,
@@ -17,11 +18,32 @@ import store from "./store";
 import AuthRoute from "./ProtectedRoute";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Modal } from "antd";
+import { logOut } from "./actions/auth";
+import { getSearchedData } from "./actions/resultAction";
+import { SET_AUTHENTICATED } from "./actions/types";
 require("dotenv").config();
 
 const App: React.FC = () => {
   const [internet, setInternet] = useState(false);
   const [connection, setConnection] = useState(false);
+
+  interface jwtType {
+    exp: number;
+    token: string;
+  }
+
+  const token = localStorage.getItem("auth-token");
+  if (token) {
+    const decoded = JwtDecode<jwtType>(token);
+    if (decoded.exp * 1000 < Date.now()) {
+      store.dispatch(logOut());
+      window.location.href = "/login";
+    } else {
+      store.dispatch({ type: SET_AUTHENTICATED });
+
+      store.dispatch(getSearchedData({ page: 1, pagination: 4 }));
+    }
+  }
 
   useEffect(() => {
     const checkConnection = () => {

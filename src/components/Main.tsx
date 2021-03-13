@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router";
-
+import { Link } from "react-router-dom";
 import {
   Button,
   Tabs,
@@ -11,6 +11,8 @@ import {
   Empty,
   Radio,
   Select,
+  List,
+  Avatar,
 } from "antd";
 
 import {
@@ -23,6 +25,8 @@ import {
 import { Search } from "../actions/resultAction";
 import Navbar from "./Navbar";
 import "./styles/main.css";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 //Retrieve RouteComponent props from react-router
 type SomeComponentProps = RouteComponentProps;
@@ -57,6 +61,8 @@ const Main: React.FC<SomeComponentProps> = ({
   }, []);
 
   const { TabPane } = Tabs;
+  //Format Date search was created using the dayjs plugin
+  dayjs.extend(relativeTime);
 
   const { Option } = Select;
 
@@ -352,17 +358,39 @@ const Main: React.FC<SomeComponentProps> = ({
           </div>
           <div className="second-container">
             <Tabs defaultActiveKey="1">
-              <TabPane tab="SEARCH HISTORY" key="1" style={{ color: "purple" }}>
+              <TabPane tab="RECENT SEARCH" key="1" style={{ color: "purple" }}>
                 <div className="history-container">
-                  <Empty
-                    image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-                    imageStyle={{
-                      height: 60,
-                    }}
-                    description={<h4>NO SEARCHED RESULTS FOUND</h4>}
-                  >
-                    <Button className="btn">Create Now</Button>
-                  </Empty>
+                  <div className="result-container">
+                    <div>
+                      <List
+                        itemLayout="horizontal"
+                        dataSource={
+                          state && state.all && state.all.data && state.all.data
+                        }
+                        renderItem={(item: any) => (
+                          <List.Item>
+                            <List.Item.Meta
+                              avatar={<Avatar src={item.icon} />}
+                              title={`
+                                  ${item.name} - 
+                                  ${dayjs(item.createdAt).fromNow()}
+                              `}
+                              description={`${item.vicinity}.`}
+                            />
+                          </List.Item>
+                        )}
+                      />
+                      {state && state.all && state.all.data ? (
+                        <div>
+                          <Link id="link" to="/all">
+                            <p style={{ fontFamily: "Roboto" }}>See More..</p>
+                          </Link>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
                 </div>
               </TabPane>
               <TabPane tab="TRENDING" key="2">

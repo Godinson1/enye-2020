@@ -105,7 +105,7 @@ export const logOut = () => async (dispatch: any) => {
 };
 
 export const setAuthorization = async (token: string) => {
-  const BizzToken = token;
-  localStorage.setItem("auth-token", BizzToken);
-  axios.defaults.headers.authorization = `Bearer ${BizzToken}`;
+  const SToken = token;
+  localStorage.setItem("auth-token", SToken);
+  axios.defaults.headers.authorization = `Bearer ${SToken}`;
 };
