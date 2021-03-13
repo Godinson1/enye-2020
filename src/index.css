@@ -45,6 +45,42 @@
   background-color: purple;
 }
 
+.ant-radio-checked .ant-radio-inner {
+  border-color: purple !important ;
+}
+
+.ant-radio-checked .ant-radio-inner:after {
+  background-color: purple;
+}
+
+.ant-radio:hover .ant-radio-inner {
+  border-color: purple;
+}
+
+.ant-radio-checked .ant-radio-inner:focus {
+  border-color: purple;
+}
+
+.ant-btn {
+  border-color: purple;
+  color: purple;
+}
+
+.ant-btn:hover {
+  border-color: purple;
+  color: purple;
+}
+
+.ant-btn:active {
+  border-color: purple;
+  color: purple;
+}
+
+.ant-btn:focus {
+  border-color: purple;
+  color: purple;
+}
+
 [data-theme="compact"]
   .site-collapse-custom-collapse
   .site-collapse-custom-panel,

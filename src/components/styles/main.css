@@ -38,6 +38,10 @@
   z-index: 4;
 }
 
+#search:hover {
+  border-color: purple;
+}
+
 .history-container {
   display: flex;
   justify-content: center;

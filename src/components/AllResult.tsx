@@ -112,10 +112,10 @@ const AllResult: React.FC<SomeComponentProps> = ({
                         {" "}
                         <Search
                           placeholder="Filter result here"
-                          enterButton="Search"
                           size="large"
                           loading={loading}
                           onChange={handleSearch}
+                          id="search"
                         />
                       </div>
                     </div>
