@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, RootStateOrAny } from "react-redux";
 import getDistance from "geolib/es/getDistance";
 import { withRouter, RouteComponentProps } from "react-router";
+import { Link } from "react-router-dom";
 import { Divider, Rate, Tooltip, Empty, Button } from "antd";
 import queryString from "query-string";
 import {
@@ -101,7 +102,15 @@ const AllResult: React.FC<SomeComponentProps> = ({
                                         <Tooltip
                                           title={"Check Map for Direction"}
                                         >
-                                          <HeatMapOutlined />
+                                          <Link
+                                            to={`/maps?name=${
+                                              data.name
+                                            }&lat=${parseFloat(
+                                              data.lat
+                                            )}&lng=${parseFloat(data.lng)}`}
+                                          >
+                                            <HeatMapOutlined />
+                                          </Link>
                                         </Tooltip>
                                       </div>
                                     </div>

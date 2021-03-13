@@ -12,6 +12,7 @@ import axios from "axios";
 import { isEmail, signInError } from "../Helpers/firebase";
 import store from "../store";
 import { RouteComponentProps } from "react-router";
+import { PRODUCTION_AUTH_ENDPOINT } from "../Helpers/";
 
 interface loginData {
   email: string;
@@ -43,7 +44,7 @@ export const LogIn = (
   } else {
     try {
       const response = await axios.post(
-        "https://serene-anchorage-25424.herokuapp.com/auth/login",
+        `${PRODUCTION_AUTH_ENDPOINT}/login`,
         data
       );
       console.log(response.data);
@@ -66,9 +67,6 @@ export const Register = (data: any, history: any) => async (dispatch: any) => {
   //Dispatch loading user on button click and store form
   dispatch({ type: USER_LOADING });
 
-  //Check if Invalid email - If true, return error else check
-  //if user is online and connected to the internet
-  //If connected, Sign in user else return connection message
   const isValidEmail = isEmail(data.email);
   if (!isValidEmail) {
     dispatch({
@@ -78,7 +76,7 @@ export const Register = (data: any, history: any) => async (dispatch: any) => {
   } else {
     try {
       const response = await axios.post(
-        "https://serene-anchorage-25424.herokuapp.com/auth/register",
+        `${PRODUCTION_AUTH_ENDPOINT}/register`,
         data
       );
       console.log(response.data);

@@ -2,7 +2,7 @@
 import { RouteComponentProps } from "react-router";
 import { LOADING, SEARCH, ERROR, GET_RESULT } from "./types";
 import axios from "axios";
-import { LOCAL_SEARCH_ENDPOINT, getLoadingType } from "../Helpers";
+import { PRODUCTION_SEARCH_ENDPOINT, getLoadingType } from "../Helpers";
 import store from "../store";
 
 interface requestData {
@@ -21,11 +21,15 @@ export const Search = (
   dispatch({ type: LOADING_TYPE });
   const token = localStorage.getItem("auth-token");
   try {
-    const response = await axios.post(`${LOCAL_SEARCH_ENDPOINT}/search`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.post(
+      `${PRODUCTION_SEARCH_ENDPOINT}/search`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     dispatch({
       type: SEARCH,
       payload: response.data.data,
@@ -55,7 +59,7 @@ export const getSearchedData = (data: searchedData) => async (
   dispatch({ type: LOADING });
   const token = localStorage.getItem("auth-token");
   try {
-    const response = await axios.post(`${LOCAL_SEARCH_ENDPOINT}`, data, {
+    const response = await axios.post(`${PRODUCTION_SEARCH_ENDPOINT}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

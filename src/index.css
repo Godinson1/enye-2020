@@ -24,6 +24,12 @@
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: purple;
   border-color: purple;
+  box-shadow: none;
+}
+
+.ant-checkbox:hover {
+  border-color: purple;
+  box-shadow: none;
 }
 
 .ant-tabs-nav .ant-tabs-tab-active {
@@ -58,6 +64,15 @@
 }
 
 .ant-radio-checked .ant-radio-inner:focus {
+  border-color: purple;
+}
+
+.ant-input:focus {
+  border-color: purple;
+  box-shadow: none;
+}
+
+.ant-input:hover {
   border-color: purple;
 }
 

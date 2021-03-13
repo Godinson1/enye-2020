@@ -7,7 +7,7 @@ const LOCAL_AUTH_ENDPOINT = "http://localhost:4000/auth";
 const PRODUCTION_AUTH_ENDPOINT =
   "https://serene-anchorage-25424.herokuapp.com/auth";
 const PRODUCTION_SEARCH_ENDPOINT =
-  "https://serene-anchorage-25424.herokuapp.com/places/search";
+  "https://serene-anchorage-25424.herokuapp.com/places";
 
 export {
   HOSPITAL,

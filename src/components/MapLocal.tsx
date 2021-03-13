@@ -36,7 +36,7 @@ const MapLocal: React.FC<SomeComponentProps> = ({
 
   //Api Key
   const key = {
-    key: "AIzaSyDvcWuLE2-FSF3MYCCGV8cZ0jsDDyxaliU",
+    key: "AIzaSyDnhO3coixMy1xmQqRsyEv4oNqb8jL62t8",
   };
 
   //Pass above defined parameters to corresponding
