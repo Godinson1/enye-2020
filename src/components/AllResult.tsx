@@ -4,7 +4,7 @@ import getDistance from "geolib/es/getDistance";
 import { withRouter, RouteComponentProps } from "react-router";
 import { Divider, Rate, Tooltip, Empty, Button, Pagination, Input } from "antd";
 import {
-  HeatMapOutlined,
+  ExclamationCircleOutlined,
   CarOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
@@ -160,8 +160,9 @@ const AllResult: React.FC<SomeComponentProps> = ({
                                             }&lat=${parseFloat(
                                               data.lat
                                             )}&lng=${parseFloat(data.lng)}`}
+                                            id="links"
                                           >
-                                            <HeatMapOutlined />
+                                            <ExclamationCircleOutlined />
                                           </Link>
                                         </Tooltip>
                                       </div>

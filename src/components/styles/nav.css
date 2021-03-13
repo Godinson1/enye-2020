@@ -27,6 +27,12 @@
   font-size: 1.3rem;
 }
 
+#link-logo {
+  font-family: Roboto;
+  color: purple;
+  font-size: 1.3rem;
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -147,13 +153,13 @@ li {
 
   .menu-icon {
     visibility: visible;
-    margin: auto 15px auto 0;
+    margin: -25px 15px auto 0;
   }
 
   .nav {
     justify-content: space-around;
     gap: 50px;
-    padding: 0;
+    padding: 0 15px 0 15px;
     z-index: 8;
   }
 
@@ -183,10 +189,23 @@ li {
 }
 
 @media screen and (max-width: 320px) {
+  .menu-icon {
+    margin: -58px 70px 0 0;
+  }
+
+  .logo-menu {
+    margin-left: 65px;
+  }
 }
 
-@media screen and (min-width: 410px) and (max-width: 420px) {
+@media screen and (min-width: 540px) and (max-width: 767px) {
   .menu-icon {
-    margin-top: 1px;
+    margin: -13px 0 0 1px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .menu-icon {
+    margin: 3px 0 0 1px;
   }
 }

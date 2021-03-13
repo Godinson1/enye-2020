@@ -140,6 +140,11 @@ label {
   cursor: pointer;
 }
 
+#links {
+  color: white;
+  cursor: pointer;
+}
+
 .flex {
   display: flex;
   justify-content: center;

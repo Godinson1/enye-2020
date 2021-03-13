@@ -2,6 +2,7 @@ import React from "react";
 import GoogleMapReact from "google-map-react";
 import { withRouter, RouteComponentProps } from "react-router";
 import queryString from "query-string";
+import Navbar from "./Navbar";
 
 //Set type for Route conponent props
 type SomeComponentProps = RouteComponentProps;
@@ -41,14 +42,17 @@ const MapLocal: React.FC<SomeComponentProps> = ({
 
   //Pass above defined parameters to corresponding
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
-      <GoogleMapReact
-        bootstrapURLKeys={key}
-        defaultCenter={center}
-        defaultZoom={11}
-        yesIWantToUseGoogleMapApiInternals
-        onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
-      ></GoogleMapReact>
+    <div>
+      <Navbar />
+      <div style={{ height: "100vh", width: "100%" }}>
+        <GoogleMapReact
+          bootstrapURLKeys={key}
+          defaultCenter={center}
+          defaultZoom={11}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
+        ></GoogleMapReact>
+      </div>
     </div>
   );
 };

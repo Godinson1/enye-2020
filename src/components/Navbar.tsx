@@ -46,7 +46,9 @@ const Navbar: React.FC = () => {
       </div>
       <div className="nav">
         <div className="logo-menu">
-          <h3 className="logoName">CLOSESEARCH</h3>
+          <Link id="link-logo" to="/main">
+            <h3 className="logoName">CLOSESEARCH</h3>
+          </Link>
         </div>
         <div className="nav-menu">
           <li>

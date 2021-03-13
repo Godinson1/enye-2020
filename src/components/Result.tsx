@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Divider, Rate, Tooltip, Empty, Button } from "antd";
 import queryString from "query-string";
 import {
-  HeatMapOutlined,
+  ExclamationCircleOutlined,
   CarOutlined,
   EnvironmentOutlined,
   ArrowLeftOutlined,
@@ -108,8 +108,9 @@ const AllResult: React.FC<SomeComponentProps> = ({
                                             }&lat=${parseFloat(
                                               data.lat
                                             )}&lng=${parseFloat(data.lng)}`}
+                                            id="links"
                                           >
-                                            <HeatMapOutlined />
+                                            <ExclamationCircleOutlined />
                                           </Link>
                                         </Tooltip>
                                       </div>
